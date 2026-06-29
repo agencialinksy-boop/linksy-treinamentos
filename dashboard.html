@@ -440,6 +440,11 @@
       if (email === 'nicoli.linksy@gmail.com') {
         document.getElementById('admin-link').style.display = 'inline-flex';
       }
+      if (email === 'ana.linksy@gmail.com') {
+        document.getElementById('admin-link').style.display = 'inline-flex';
+        document.getElementById('admin-link').href = 'lider.html';
+        document.getElementById('admin-link').textContent = '⚙ Meu Time';
+      }
 
       const { data } = await sb.from('user_progress').select('lesson_id').eq('user_id', userId);
       if (data) data.forEach(r => completedLessons.add(r.lesson_id));
