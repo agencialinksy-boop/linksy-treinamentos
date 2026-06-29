@@ -94,6 +94,8 @@
       transform: translateY(-4px);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
+    .module-card.coming-soon { cursor: default; opacity: 0.6; }
+    .module-card.coming-soon:hover { transform: none; box-shadow: none; }
 
     /* COVER */
     .card-cover {
@@ -406,6 +408,14 @@
           { id: 'a6', title: 'Gerando a Imagem',                            group: 'Vídeos Imobiliários com IA' },
           { id: 'a7', title: 'Animando na Prática',                         group: 'Vídeos Imobiliários com IA' },
         ]
+      },
+      {
+        id: 'gravacao',
+        title: 'Direção e Gravação',
+        color: '#22d3ee',
+        coverImg: 'CARD 4.png',
+        comingSoon: true,
+        lessons: []
       }
     ];
 
@@ -449,26 +459,26 @@
 
       TRACKS.forEach((track, idx) => {
         const done = track.lessons.filter(l => completedLessons.has(l.id)).length;
-        const trackPct = Math.round((done / track.lessons.length) * 100);
+        const trackPct = track.lessons.length ? Math.round((done / track.lessons.length) * 100) : 0;
 
         const card = document.createElement('div');
-        card.className = 'module-card';
-        card.onclick = () => openModal(track);
+        card.className = 'module-card' + (track.comingSoon ? ' coming-soon' : '');
+        card.onclick = () => { if (!track.comingSoon) openModal(track); };
         card.innerHTML = `
           <div class="card-cover">
             <div class="card-cover-bg" style="background-image:url('${track.coverImg}');background-size:cover;background-position:center"></div>
             <div class="card-cover-overlay"></div>
-            <div class="card-badge">${track.lessons.length} Aulas</div>
-            <div class="card-progress-bar">
-              <div class="card-progress-fill" style="width:${trackPct}%;background:${track.color}"></div>
-            </div>
+            <div class="card-badge">${track.comingSoon ? 'Em breve' : track.lessons.length + ' Aulas'}</div>
+            ${!track.comingSoon ? `<div class="card-progress-bar"><div class="card-progress-fill" style="width:${trackPct}%;background:${track.color}"></div></div>` : ''}
           </div>
           <div class="card-body">
             <div class="card-track-label" style="color:${track.color}">Módulo ${idx + 1}</div>
             <div class="card-title">${track.title}</div>
             <div class="card-meta">
-              <span class="card-lessons-count">${done} de ${track.lessons.length} concluídas</span>
-              <span class="card-pct" style="color:${track.color}">${trackPct}%</span>
+              ${track.comingSoon
+                ? `<span class="card-lessons-count" style="color:${track.color}">Do Roteiro ao Cliente</span>`
+                : `<span class="card-lessons-count">${done} de ${track.lessons.length} concluídas</span><span class="card-pct" style="color:${track.color}">${trackPct}%</span>`
+              }
             </div>
           </div>
         `;
