@@ -6,30 +6,38 @@
   <title>Linksy Treinamentos</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       background: #080808;
-      min-height: 100vh;
       font-family: 'Segoe UI', system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      color: #fff;
     }
-    .bg {
-      position: fixed;
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 48px;
+    }
+    .hero-bg {
+      position: absolute;
       inset: 0;
       background-image: url('FRONT2.png');
       background-size: cover;
       background-position: center;
       z-index: 0;
     }
-    .btn-wrap {
+    .hero-content {
       position: relative;
       z-index: 1;
-      position: fixed;
-      bottom: 48px;
-      left: 50%;
-      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
     }
     .btn {
       display: inline-block;
@@ -53,12 +61,205 @@
       box-shadow: 0 0 40px rgba(209,21,80,0.25);
       transform: translateY(-2px);
     }
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.35);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .scroll-hint:hover { color: rgba(255,255,255,0.7); }
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      animation: bounce 1.8s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.4; }
+      50% { transform: rotate(45deg) translateY(5px); opacity: 1; }
+    }
+
+    /* TEAM SECTION */
+    .team-section {
+      padding: 96px 40px 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #d11550;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 60px;
+      line-height: 1.2;
+    }
+    .section-title span { color: rgba(255,255,255,0.35); font-weight: 400; }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 24px;
+    }
+
+    .team-card {
+      background: #0e0e0e;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #d11550, transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .team-card:hover { border-color: rgba(255,255,255,0.13); transform: translateY(-3px); }
+    .team-card:hover::before { opacity: 1; }
+
+    .team-role {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #d11550;
+      margin-bottom: 8px;
+    }
+    .team-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .team-bio {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .team-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(209,21,80,0.1);
+      color: #d11550;
+      border: 1px solid rgba(209,21,80,0.2);
+    }
+    .team-badge.soon {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    /* CTA FINAL */
+    .cta-section {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .cta-title { font-size: 28px; font-weight: 700; margin-bottom: 10px; }
+    .cta-sub { font-size: 15px; color: rgba(255,255,255,0.35); margin-bottom: 36px; }
+    .btn-cta {
+      display: inline-block;
+      padding: 16px 56px;
+      border-radius: 50px;
+      background: #d11550;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-cta:hover {
+      background: #e8185a;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(209,21,80,0.35);
+    }
+
+    @media (max-width: 640px) {
+      .team-section { padding: 60px 20px 60px; }
+      .section-title { font-size: 24px; }
+      .cta-section { padding: 60px 20px; }
+    }
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="btn-wrap">
-    <a href="login.html" class="btn">Entrar na plataforma</a>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <a href="login.html" class="btn">Entrar na plataforma</a>
+      <a href="#team" class="scroll-hint">
+        <span>Conheça o time</span>
+        <div class="scroll-arrow"></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="team-section">
+      <p class="section-eyebrow">Por trás da plataforma</p>
+      <h2 class="section-title">Quem vai te ensinar <span>tudo isso</span></h2>
+
+      <div class="team-grid">
+
+        <div class="team-card">
+          <div class="team-role">CEO & Fundadora</div>
+          <div class="team-name">Damiana Thiesen</div>
+          <p class="team-bio">Fundou a Agência Linksy em 2022 e desde então lidera uma das agências mais criativas do mercado. Nos cursos de mentoria, ela ensina empresários a dominarem sua própria presença digital — do conteúdo à rotina, sem depender de ninguém.</p>
+          <span class="team-badge soon">Mentoria — Em breve</span>
+        </div>
+
+        <div class="team-card">
+          <div class="team-role">Líder do Time Audiovisual</div>
+          <div class="team-name">Ana Lima</div>
+          <p class="team-bio">Responsável por transformar ideias em vídeos que geram resultado. Ana lidera o time de edição da Linksy e nesta plataforma compartilha tudo que seu time precisa saber para entregar conteúdo no mais alto nível.</p>
+          <span class="team-badge">Trilhas de Edição — Disponível</span>
+        </div>
+
+        <div class="team-card">
+          <div class="team-role">Líder do Time de Estratégia</div>
+          <div class="team-name">Nicoli Martinazzo</div>
+          <p class="team-bio">A mente por trás das estratégias que fazem os clientes da Linksy crescerem. Em breve, Nicoli traz para a plataforma seus cursos de estratégia de conteúdo e posicionamento digital.</p>
+          <span class="team-badge soon">Estratégia de Conteúdo — Em breve</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <div class="cta-section">
+    <h2 class="cta-title">Pronta para começar?</h2>
+    <p class="cta-sub">Acesse as trilhas e evolua no seu ritmo.</p>
+    <a href="login.html" class="btn-cta">Entrar na plataforma</a>
   </div>
+
 </body>
 </html>
