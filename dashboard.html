@@ -356,7 +356,7 @@
         title: 'Edição Básica',
         color: '#d11550',
         icon: '🎬',
-        coverGradient: 'linear-gradient(135deg, #1a0010 0%, #3d0020 40%, #6b0035 100%)',
+        coverImg: 'card1.png',
         lessons: [
           { id: 'b1', title: 'Entendendo a Timeline' },
           { id: 'b2', title: 'Cortes e Ritmo' },
@@ -371,7 +371,7 @@
         title: 'Entendendo Formatos',
         color: '#8b5cf6',
         icon: '📱',
-        coverGradient: 'linear-gradient(135deg, #0d0020 0%, #1e0045 40%, #3b0082 100%)',
+        coverImg: 'card2.png',
         lessons: [
           { id: 'f1', title: 'Reels e Shorts' },
           { id: 'f2', title: 'Talking Head' },
@@ -384,7 +384,7 @@
         title: 'Edição com IA',
         color: '#f59e0b',
         icon: '✨',
-        coverGradient: 'linear-gradient(135deg, #1a1000 0%, #3d2800 40%, #6b4500 100%)',
+        coverImg: 'card3.png',
         lessons: [
           { id: 'a1', title: 'Motion Graphics' },
           { id: 'a2', title: 'Colorização Avançada' },
@@ -441,7 +441,7 @@
         card.onclick = () => openModal(track);
         card.innerHTML = `
           <div class="card-cover">
-            <div class="card-cover-bg" style="background:${track.coverGradient}"></div>
+            <div class="card-cover-bg" style="background-image:url('${track.coverImg}');background-size:cover;background-position:center"></div>
             <div class="card-cover-overlay"></div>
             <div class="card-cover-icon">${track.icon}</div>
             <div class="card-badge">${track.lessons.length} Aulas</div>
