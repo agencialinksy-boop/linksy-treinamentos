@@ -239,6 +239,16 @@
     .modal-meta-text { font-size: 12px; color: rgba(255,255,255,0.35); white-space: nowrap; }
 
     .modal-lessons { padding: 8px 0; }
+    .lesson-group-header {
+      padding: 12px 28px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      border-left: 2px solid;
+      margin: 8px 0 2px;
+    }
     .lesson {
       display: flex;
       align-items: center;
@@ -347,12 +357,13 @@
         color: '#d11550',
         coverImg: 'CARD 1.png',
         lessons: [
-          { id: 'b1', title: 'Entendendo a Timeline' },
-          { id: 'b2', title: 'Cortes e Ritmo' },
-          { id: 'b3', title: 'Transições' },
-          { id: 'b4', title: 'Correção de Cor Básica' },
-          { id: 'b5', title: 'Tratamento de Áudio' },
-          { id: 'b6', title: 'Tweet Style Video' },
+          { id: 'b1', title: 'Legendagem do Zero' },
+          { id: 'b2', title: 'Checklist de Qualidade de Áudio' },
+          { id: 'b3', title: 'Como Salvar um Áudio com Ruído' },
+          { id: 'b4', title: 'Correção de Cor: Iluminando Rostos e Cenas Escuras' },
+          { id: 'b5', title: 'Legendas Dinâmicas no CapCut' },
+          { id: 'b6', title: 'Transições: Quando Usar (e Quando Não Usar)' },
+          { id: 'b7', title: 'Autocorte: Eliminando Respiros e Pausas' },
         ]
       },
       {
@@ -361,10 +372,24 @@
         color: '#8b5cf6',
         coverImg: 'CARD 2.png',
         lessons: [
-          { id: 'f1', title: 'Reels e Shorts' },
-          { id: 'f2', title: 'Talking Head' },
-          { id: 'f3', title: 'Jacob Petry Style (Tela Dividida)' },
-          { id: 'f4', title: 'Podcast Tela Dividida' },
+          { id: 'f1',  title: 'O Que é um Reels Tweet?',                    group: 'Reels Tweet' },
+          { id: 'f2',  title: 'Entendendo o Direcionamento de Conteúdo',    group: 'Reels Tweet' },
+          { id: 'f3',  title: 'Onde Fazer e Onde Editar?',                  group: 'Reels Tweet' },
+          { id: 'f4',  title: 'Padrão de Qualidade e Entrega Final',        group: 'Reels Tweet' },
+          { id: 'f5',  title: 'O Que é um Reels Caixinha?',                 group: 'Reels Caixinha' },
+          { id: 'f6',  title: 'Entendendo o Direcionamento de Conteúdo',    group: 'Reels Caixinha' },
+          { id: 'f7',  title: 'Como e Onde Criar a Caixinha?',              group: 'Reels Caixinha' },
+          { id: 'f8',  title: 'Como Aplicar na Edição?',                    group: 'Reels Caixinha' },
+          { id: 'f9',  title: 'O Que é um Reels Tela Inteira?',             group: 'Reels Tela Inteira' },
+          { id: 'f10', title: 'Entendendo o Direcionamento de Conteúdo',    group: 'Reels Tela Inteira' },
+          { id: 'f11', title: 'Como Fazer e Onde Editar?',                  group: 'Reels Tela Inteira' },
+          { id: 'f12', title: 'Como Baixar o Vídeo Sem Marca d\'Água?',     group: 'Reels Tela Inteira' },
+          { id: 'f13', title: 'O Que é o Reels Jacob Petry?',               group: 'Reels Jacob Petry (Tela Dividida)' },
+          { id: 'f14', title: 'Entendendo o Direcionamento de Conteúdo',    group: 'Reels Jacob Petry (Tela Dividida)' },
+          { id: 'f15', title: 'Como Fazer na Prática?',                     group: 'Reels Jacob Petry (Tela Dividida)' },
+          { id: 'f16', title: 'Legendas e Headlines no Lugar Certo',        group: 'Reels Jacob Petry (Tela Dividida)' },
+          { id: 'f17', title: 'Onde Buscar as Imagens?',                    group: 'Reels Jacob Petry (Tela Dividida)' },
+          { id: 'f18', title: 'Removendo o Fundo (Remove BG)',              group: 'Reels Jacob Petry (Tela Dividida)' },
         ]
       },
       {
@@ -373,10 +398,13 @@
         color: '#f59e0b',
         coverImg: 'CARD 3.png',
         lessons: [
-          { id: 'a1', title: 'Motion Graphics' },
-          { id: 'a2', title: 'Colorização Avançada' },
-          { id: 'a3', title: 'Efeitos Visuais' },
-          { id: 'a4', title: 'Transições Complexas' },
+          { id: 'a1', title: 'CapCut e ElevenLabs na Prática',              group: 'Como Gerar Áudio com IA?' },
+          { id: 'a2', title: 'Criando Prompts que Funcionam',               group: 'Como Trocar o Fundo de um Vídeo com IA' },
+          { id: 'a3', title: 'Qual IA Utilizar?',                           group: 'Vídeos Imobiliários com IA' },
+          { id: 'a4', title: 'Escolhendo o Frame Certo (Recorte e Divisão)',group: 'Vídeos Imobiliários com IA' },
+          { id: 'a5', title: 'Criando os Prompts',                          group: 'Vídeos Imobiliários com IA' },
+          { id: 'a6', title: 'Gerando a Imagem',                            group: 'Vídeos Imobiliários com IA' },
+          { id: 'a7', title: 'Animando na Prática',                         group: 'Vídeos Imobiliários com IA' },
         ]
       }
     ];
@@ -466,15 +494,25 @@
       document.getElementById('modal-fill').style.background = track.color;
       document.getElementById('modal-meta-text').textContent = `${done}/${track.lessons.length} · ${pct}%`;
 
-      document.getElementById('modal-lessons').innerHTML = track.lessons.map((l, i) => `
-        <div class="lesson ${completedLessons.has(l.id) ? 'completed' : ''}" data-id="${l.id}" onclick="toggleLesson('${l.id}', '${track.id}')">
-          <span class="lesson-num">${String(i + 1).padStart(2, '0')}</span>
-          <div class="check ${completedLessons.has(l.id) ? 'done' : ''}" style="${completedLessons.has(l.id) ? 'background:' + track.color + ';border-color:' + track.color : ''}">
-            ${completedLessons.has(l.id) ? '✓' : ''}
+      let html = '';
+      let lastGroup = null;
+      let lessonNum = 0;
+      track.lessons.forEach(l => {
+        if (l.group && l.group !== lastGroup) {
+          lastGroup = l.group;
+          html += `<div class="lesson-group-header" style="border-left-color:${track.color}">${l.group}</div>`;
+        }
+        lessonNum++;
+        const done = completedLessons.has(l.id);
+        html += `<div class="lesson ${done ? 'completed' : ''}" data-id="${l.id}" onclick="toggleLesson('${l.id}', '${track.id}')">
+          <span class="lesson-num">${String(lessonNum).padStart(2, '0')}</span>
+          <div class="check ${done ? 'done' : ''}" style="${done ? 'background:' + track.color + ';border-color:' + track.color : ''}">
+            ${done ? '✓' : ''}
           </div>
           <span class="lesson-title">${l.title}</span>
-        </div>
-      `).join('');
+        </div>`;
+      });
+      document.getElementById('modal-lessons').innerHTML = html;
     }
 
     function closeModal(e) {
