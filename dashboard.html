@@ -8,112 +8,252 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #080808; min-height: 100vh; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #fff; }
 
-    /* SIDEBAR */
-    .sidebar {
-      position: fixed;
-      left: 0; top: 0; bottom: 0;
-      width: 220px;
-      background: #0c0c0c;
-      border-right: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      flex-direction: column;
-      padding: 28px 16px;
+    /* TOP NAV */
+    .topnav {
+      position: sticky;
+      top: 0;
       z-index: 100;
-    }
-    .logo { font-size: 17px; font-weight: 700; color: #fff; }
-    .logo span { color: #d11550; }
-    .logo-sub { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 36px; margin-top: 2px; }
-    .nav-item {
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 40px;
+      height: 60px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      border-radius: 8px;
-      color: rgba(255,255,255,0.45);
-      font-size: 13.5px;
-      cursor: pointer;
-      margin-bottom: 2px;
-      transition: all 0.2s;
-      text-decoration: none;
+      justify-content: space-between;
+      gap: 16px;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.85); }
-    .nav-item.active { background: rgba(209,21,80,0.1); color: #d11550; }
-    .nav-bottom { margin-top: auto; }
-    .user-box {
-      padding: 14px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .user-email { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 10px; word-break: break-all; line-height: 1.4; }
-    .logout-btn {
+    .nav-logo { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+    .nav-logo span { color: #d11550; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-email { font-size: 13px; color: rgba(255,255,255,0.3); }
+    .nav-admin {
       font-size: 12px;
-      color: rgba(209,21,80,0.7);
-      cursor: pointer;
+      font-weight: 600;
+      color: #d11550;
+      text-decoration: none;
+      border: 1px solid rgba(209,21,80,0.3);
+      padding: 5px 14px;
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .nav-admin:hover { background: rgba(209,21,80,0.1); }
+    .nav-logout {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
       background: none;
       border: none;
-      padding: 0;
-      transition: color 0.2s;
+      cursor: pointer;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: all 0.2s;
     }
-    .logout-btn:hover { color: #d11550; }
+    .nav-logout:hover { color: #fff; background: rgba(255,255,255,0.05); }
 
-    /* MAIN */
-    .main { margin-left: 220px; padding: 48px 44px; }
-    .page-header { margin-bottom: 36px; }
-    .page-header h1 { font-size: 26px; font-weight: 600; margin-bottom: 6px; }
-    .page-header p { color: rgba(255,255,255,0.35); font-size: 14px; }
+    /* HERO */
+    .hero {
+      padding: 52px 40px 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .hero-welcome { font-size: 13px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .hero-title { font-size: 30px; font-weight: 700; margin-bottom: 24px; }
+    .hero-title span { color: #d11550; }
 
-    /* OVERALL PROGRESS */
     .overall-bar {
-      background: #111;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 22px 28px;
-      margin-bottom: 32px;
       display: flex;
       align-items: center;
+      gap: 16px;
+      max-width: 520px;
+    }
+    .overall-label { font-size: 13px; color: rgba(255,255,255,0.35); white-space: nowrap; }
+    .overall-track { flex: 1; background: rgba(255,255,255,0.07); border-radius: 4px; height: 5px; }
+    .overall-fill { height: 5px; border-radius: 4px; background: linear-gradient(90deg, #d11550, #ff4d7a); transition: width 0.8s ease; }
+    .overall-pct { font-size: 14px; font-weight: 700; color: #d11550; min-width: 36px; }
+
+    /* SECTION */
+    .section { padding: 44px 40px 60px; }
+    .section-label { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 28px; }
+
+    /* CARDS GRID */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
     }
-    .overall-label { font-size: 13px; color: rgba(255,255,255,0.4); min-width: 130px; }
-    .overall-track { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 5px; }
-    .overall-fill { height: 5px; border-radius: 4px; background: linear-gradient(90deg, #d11550, #ff4d7a); transition: width 0.6s; }
-    .overall-pct { font-size: 14px; font-weight: 600; color: #d11550; min-width: 40px; text-align: right; }
 
-    /* TRACKS GRID */
-    .tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-
-    .track-card {
-      background: #0e0e0e;
-      border: 1px solid rgba(255,255,255,0.07);
+    .module-card {
       border-radius: 16px;
       overflow: hidden;
-      transition: border-color 0.2s;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
     }
-    .track-card:hover { border-color: rgba(255,255,255,0.12); }
+    .module-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
 
-    .track-header { padding: 22px 22px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .track-badge {
-      display: inline-block;
+    /* COVER */
+    .card-cover {
+      position: relative;
+      height: 190px;
+      overflow: hidden;
+    }
+    .card-cover-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.4s ease;
+    }
+    .module-card:hover .card-cover-bg { transform: scale(1.05); }
+    .card-cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%);
+    }
+    .card-cover-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      opacity: 0.18;
+      filter: blur(1px);
+    }
+
+    /* BADGE */
+    .card-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      z-index: 2;
+    }
+
+    /* PROGRESS ON CARD */
+    .card-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      z-index: 2;
+    }
+    .card-progress-fill {
+      height: 3px;
+      border-radius: 0;
+      transition: width 0.6s ease;
+    }
+
+    /* CARD BODY */
+    .card-body {
+      padding: 20px 22px 22px;
+    }
+    .card-track-label {
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
-    .track-title { font-size: 17px; font-weight: 600; margin-bottom: 16px; color: #fff; }
-    .progress-bg { background: rgba(255,255,255,0.06); border-radius: 4px; height: 4px; margin-bottom: 8px; }
-    .progress-fill { height: 4px; border-radius: 4px; transition: width 0.5s ease; }
-    .progress-text { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-lessons-count { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .card-pct { font-size: 13px; font-weight: 700; }
 
-    /* LESSONS */
-    .lessons { padding: 6px 0; }
+    /* MODAL / EXPAND */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: scale(0.96) translateY(8px);
+      transition: transform 0.25s;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.1) transparent;
+    }
+    .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+    .modal-header {
+      padding: 28px 28px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: sticky;
+      top: 0;
+      background: #111;
+      z-index: 10;
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: rgba(255,255,255,0.06);
+      border: none;
+      color: rgba(255,255,255,0.5);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .modal-track-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+    .modal-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .modal-meta { display: flex; align-items: center; gap: 12px; }
+    .modal-meta-bar { flex: 1; background: rgba(255,255,255,0.07); border-radius: 4px; height: 4px; }
+    .modal-meta-fill { height: 4px; border-radius: 4px; transition: width 0.5s; }
+    .modal-meta-text { font-size: 12px; color: rgba(255,255,255,0.35); white-space: nowrap; }
+
+    .modal-lessons { padding: 8px 0; }
     .lesson {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 13px 22px;
+      gap: 14px;
+      padding: 15px 28px;
       cursor: pointer;
       transition: background 0.15s;
       border-bottom: 1px solid rgba(255,255,255,0.03);
@@ -121,59 +261,84 @@
     }
     .lesson:last-child { border-bottom: none; }
     .lesson:hover { background: rgba(255,255,255,0.025); }
+    .lesson-num {
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      min-width: 20px;
+      font-weight: 600;
+    }
     .check {
-      width: 20px; height: 20px;
+      width: 22px; height: 22px;
       border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.14);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 10px;
+      font-size: 11px;
       transition: all 0.2s;
     }
-    .check.done { border-color: #d11550; background: #d11550; }
-    .lesson-title { font-size: 13.5px; color: rgba(255,255,255,0.65); transition: color 0.2s; line-height: 1.4; }
-    .lesson:hover .lesson-title { color: rgba(255,255,255,0.9); }
-    .lesson.completed .lesson-title { color: rgba(255,255,255,0.28); text-decoration: line-through; }
+    .check.done { border-color: transparent; background: #d11550; }
+    .lesson-title { font-size: 14px; color: rgba(255,255,255,0.7); transition: color 0.2s; line-height: 1.4; flex: 1; }
+    .lesson:hover .lesson-title { color: rgba(255,255,255,0.95); }
+    .lesson.completed .lesson-title { color: rgba(255,255,255,0.25); text-decoration: line-through; }
 
     /* LOADING */
-    .loading { color: rgba(255,255,255,0.25); font-size: 14px; padding: 20px 0; }
+    .loading { color: rgba(255,255,255,0.2); font-size: 14px; padding: 40px 0; text-align: center; }
 
-    @media (max-width: 768px) {
-      .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; }
-      .main { margin-left: 0; padding: 24px 16px; }
+    @media (max-width: 640px) {
+      .topnav { padding: 0 20px; }
+      .hero { padding: 36px 20px 28px; }
+      .section { padding: 32px 20px 48px; }
+      .hero-title { font-size: 24px; }
+      .nav-email { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div>
-      <div class="logo">LINK<span>SY</span></div>
-      <div class="logo-sub">Treinamentos</div>
-    </div>
-    <a href="dashboard.html" class="nav-item active">📚 Trilhas</a>
-    <div id="admin-nav"></div>
-    <div class="nav-bottom">
-      <div class="user-box">
-        <p class="user-email" id="user-email">...</p>
-        <button class="logout-btn" onclick="logout()">Sair da conta</button>
-      </div>
-    </div>
-  </div>
 
-  <div class="main">
-    <div class="page-header">
-      <h1>Trilhas de Treinamento</h1>
-      <p id="welcome-msg">Acompanhe seu progresso em cada trilha</p>
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="nav-logo">LINK<span>SY</span></div>
+    <div class="nav-right">
+      <span class="nav-email" id="nav-email"></span>
+      <a href="admin.html" class="nav-admin" id="admin-link" style="display:none">⚙ Admin</a>
+      <button class="nav-logout" onclick="logout()">Sair</button>
     </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-welcome">Bem-vinda de volta</p>
+    <h1 class="hero-title" id="hero-title">Suas <span>trilhas</span></h1>
     <div class="overall-bar" id="overall-bar" style="display:none">
       <span class="overall-label">Progresso geral</span>
       <div class="overall-track"><div class="overall-fill" id="overall-fill" style="width:0%"></div></div>
       <span class="overall-pct" id="overall-pct">0%</span>
     </div>
-    <div class="tracks" id="tracks">
+  </div>
+
+  <!-- CARDS -->
+  <div class="section">
+    <p class="section-label">Trilhas de treinamento</p>
+    <div class="cards-grid" id="cards-grid">
       <p class="loading">Carregando trilhas...</p>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <button class="modal-close" onclick="closeModalDirect()">✕</button>
+        <div class="modal-track-label" id="modal-label"></div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-meta">
+          <div class="modal-meta-bar"><div class="modal-meta-fill" id="modal-fill"></div></div>
+          <span class="modal-meta-text" id="modal-meta-text"></span>
+        </div>
+      </div>
+      <div class="modal-lessons" id="modal-lessons"></div>
     </div>
   </div>
 
@@ -190,6 +355,8 @@
         id: 'basica',
         title: 'Edição Básica',
         color: '#d11550',
+        icon: '🎬',
+        coverGradient: 'linear-gradient(135deg, #1a0010 0%, #3d0020 40%, #6b0035 100%)',
         lessons: [
           { id: 'b1', title: 'Entendendo a Timeline' },
           { id: 'b2', title: 'Cortes e Ritmo' },
@@ -201,8 +368,10 @@
       },
       {
         id: 'formatos',
-        title: 'Edit & Formatos',
+        title: 'Entendendo Formatos',
         color: '#8b5cf6',
+        icon: '📱',
+        coverGradient: 'linear-gradient(135deg, #0d0020 0%, #1e0045 40%, #3b0082 100%)',
         lessons: [
           { id: 'f1', title: 'Reels e Shorts' },
           { id: 'f2', title: 'Talking Head' },
@@ -212,8 +381,10 @@
       },
       {
         id: 'avancada',
-        title: 'Edição Avançada',
+        title: 'Edição com IA',
         color: '#f59e0b',
+        icon: '✨',
+        coverGradient: 'linear-gradient(135deg, #1a1000 0%, #3d2800 40%, #6b4500 100%)',
         lessons: [
           { id: 'a1', title: 'Motion Graphics' },
           { id: 'a2', title: 'Colorização Avançada' },
@@ -223,8 +394,10 @@
       }
     ];
 
+    const TOTAL_LESSONS = TRACKS.reduce((a, t) => a + t.lessons.length, 0);
     let completedLessons = new Set();
     let userId = null;
+    let activeTrack = null;
 
     async function init() {
       const { data: { session } } = await sb.auth.getSession();
@@ -232,67 +405,102 @@
 
       userId = session.user.id;
       const email = session.user.email;
-      document.getElementById('user-email').textContent = email;
+      document.getElementById('nav-email').textContent = email;
 
       const firstName = session.user.user_metadata?.full_name?.split(' ')[0] || '';
-      if (firstName) document.getElementById('welcome-msg').textContent = `Olá, ${firstName}! Acompanhe seu progresso.`;
+      if (firstName) {
+        document.getElementById('hero-title').innerHTML = `Olá, <span>${firstName}!</span>`;
+      }
 
       if (email === 'nicoli.linksy@gmail.com') {
-        document.getElementById('admin-nav').innerHTML =
-          '<a href="admin.html" class="nav-item">⚙️ Painel Admin</a>';
+        document.getElementById('admin-link').style.display = 'inline-flex';
       }
 
       const { data } = await sb.from('user_progress').select('lesson_id').eq('user_id', userId);
       if (data) data.forEach(r => completedLessons.add(r.lesson_id));
 
-      renderAll();
+      renderCards();
     }
 
-    function renderAll() {
-      const totalLessons = TRACKS.reduce((a, t) => a + t.lessons.length, 0);
+    function renderCards() {
       const totalDone = completedLessons.size;
-      const pct = Math.round((totalDone / totalLessons) * 100);
+      const pct = Math.round((totalDone / TOTAL_LESSONS) * 100);
       document.getElementById('overall-bar').style.display = 'flex';
       document.getElementById('overall-fill').style.width = pct + '%';
       document.getElementById('overall-pct').textContent = pct + '%';
 
-      const container = document.getElementById('tracks');
-      container.innerHTML = '';
+      const grid = document.getElementById('cards-grid');
+      grid.innerHTML = '';
 
-      TRACKS.forEach(track => {
+      TRACKS.forEach((track, idx) => {
         const done = track.lessons.filter(l => completedLessons.has(l.id)).length;
         const trackPct = Math.round((done / track.lessons.length) * 100);
 
         const card = document.createElement('div');
-        card.className = 'track-card';
+        card.className = 'module-card';
+        card.onclick = () => openModal(track);
         card.innerHTML = `
-          <div class="track-header">
-            <div class="track-badge" style="background:${track.color}18;color:${track.color}">${track.id.toUpperCase()}</div>
-            <div class="track-title">${track.title}</div>
-            <div class="progress-bg">
-              <div class="progress-fill" style="width:${trackPct}%;background:${track.color}"></div>
+          <div class="card-cover">
+            <div class="card-cover-bg" style="background:${track.coverGradient}"></div>
+            <div class="card-cover-overlay"></div>
+            <div class="card-cover-icon">${track.icon}</div>
+            <div class="card-badge">${track.lessons.length} Aulas</div>
+            <div class="card-progress-bar">
+              <div class="card-progress-fill" style="width:${trackPct}%;background:${track.color}"></div>
             </div>
-            <div class="progress-text">${done} de ${track.lessons.length} aulas concluídas · ${trackPct}%</div>
           </div>
-          <div class="lessons">
-            ${track.lessons.map(l => `
-              <div class="lesson ${completedLessons.has(l.id) ? 'completed' : ''}" data-id="${l.id}">
-                <div class="check ${completedLessons.has(l.id) ? 'done' : ''}">${completedLessons.has(l.id) ? '✓' : ''}</div>
-                <span class="lesson-title">${l.title}</span>
-              </div>
-            `).join('')}
+          <div class="card-body">
+            <div class="card-track-label" style="color:${track.color}">Módulo ${idx + 1}</div>
+            <div class="card-title">${track.title}</div>
+            <div class="card-meta">
+              <span class="card-lessons-count">${done} de ${track.lessons.length} concluídas</span>
+              <span class="card-pct" style="color:${track.color}">${trackPct}%</span>
+            </div>
           </div>
         `;
-
-        card.querySelectorAll('.lesson').forEach(el => {
-          el.addEventListener('click', () => toggleLesson(el.dataset.id));
-        });
-
-        container.appendChild(card);
+        grid.appendChild(card);
       });
     }
 
-    async function toggleLesson(lessonId) {
+    function openModal(track) {
+      activeTrack = track;
+      document.getElementById('modal-label').style.color = track.color;
+      document.getElementById('modal-label').textContent = track.title;
+      document.getElementById('modal-title').textContent = track.title;
+      renderModal(track);
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function renderModal(track) {
+      const done = track.lessons.filter(l => completedLessons.has(l.id)).length;
+      const pct = Math.round((done / track.lessons.length) * 100);
+
+      document.getElementById('modal-fill').style.width = pct + '%';
+      document.getElementById('modal-fill').style.background = track.color;
+      document.getElementById('modal-meta-text').textContent = `${done}/${track.lessons.length} · ${pct}%`;
+
+      document.getElementById('modal-lessons').innerHTML = track.lessons.map((l, i) => `
+        <div class="lesson ${completedLessons.has(l.id) ? 'completed' : ''}" data-id="${l.id}" onclick="toggleLesson('${l.id}', '${track.id}')">
+          <span class="lesson-num">${String(i + 1).padStart(2, '0')}</span>
+          <div class="check ${completedLessons.has(l.id) ? 'done' : ''}" style="${completedLessons.has(l.id) ? 'background:' + track.color + ';border-color:' + track.color : ''}">
+            ${completedLessons.has(l.id) ? '✓' : ''}
+          </div>
+          <span class="lesson-title">${l.title}</span>
+        </div>
+      `).join('');
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+    }
+    function closeModalDirect() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      activeTrack = null;
+    }
+
+    async function toggleLesson(lessonId, trackId) {
       const isDone = completedLessons.has(lessonId);
       if (isDone) {
         await sb.from('user_progress').delete().eq('user_id', userId).eq('lesson_id', lessonId);
@@ -301,7 +509,9 @@
         await sb.from('user_progress').insert({ user_id: userId, lesson_id: lessonId });
         completedLessons.add(lessonId);
       }
-      renderAll();
+      const track = TRACKS.find(t => t.id === trackId);
+      if (track) renderModal(track);
+      renderCards();
     }
 
     async function logout() {
