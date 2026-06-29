@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel da Líder — Linksy</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #080808; min-height: 100vh; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #fff; padding: 40px 44px; }
+
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .logo { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+    .logo span { color: #d11550; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .badge-lider { font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; background: rgba(209,21,80,0.12); color: #d11550; border: 1px solid rgba(209,21,80,0.25); }
+    .back { font-size: 13px; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .back:hover { color: #fff; }
+
+    .page-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-sub { font-size: 14px; color: rgba(255,255,255,0.35); margin-bottom: 28px; }
+
+    .stats-row { display: flex; gap: 14px; margin-bottom: 36px; flex-wrap: wrap; }
+    .stat { background: #0e0e0e; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 20px; min-width: 120px; }
+    .stat-label { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+    .stat-value { font-size: 24px; font-weight: 700; color: #fff; }
+    .stat-value.pink { color: #d11550; }
+
+    .section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 16px; }
+
+    .editora-card { background: #0e0e0e; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 22px 24px; margin-bottom: 14px; transition: border-color 0.2s; }
+    .editora-card:hover { border-color: rgba(255,255,255,0.11); }
+
+    .editora-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+    .editora-name { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+    .editora-since { font-size: 12px; color: rgba(255,255,255,0.22); }
+    .editora-pct { font-size: 13px; font-weight: 700; color: #d11550; background: rgba(209,21,80,0.1); padding: 5px 14px; border-radius: 20px; white-space: nowrap; }
+
+    .trilhas-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .trilha-chip { border-radius: 10px; padding: 10px 14px; min-width: 120px; }
+    .trilha-chip-name { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .trilha-chip-val { font-size: 13px; font-weight: 600; }
+    .trilha-bar { margin-top: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; height: 3px; }
+    .trilha-fill { height: 3px; border-radius: 3px; transition: width 0.5s; }
+
+    .activity-wrap { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px; }
+    .activity-label { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+    .activity-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.03); gap: 12px; }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-aula { color: rgba(255,255,255,0.55); flex: 1; }
+    .activity-time { color: rgba(255,255,255,0.2); white-space: nowrap; font-size: 11px; }
+    .activity-empty { font-size: 12px; color: rgba(255,255,255,0.18); font-style: italic; }
+
+    .loading { color: rgba(255,255,255,0.2); font-size: 14px; text-align: center; padding: 60px 0; }
+
+    @media (max-width: 640px) {
+      body { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">LINK<span>SY</span></div>
+    <div class="topbar-right">
+      <span class="badge-lider">Painel da Líder</span>
+      <a href="dashboard.html" class="back">← Dashboard</a>
+    </div>
+  </div>
+
+  <div class="page-title">Meu Time</div>
+  <div class="page-sub">Progresso e atividades das editoras</div>
+
+  <div class="stats-row" id="stats-row"></div>
+
+  <div class="section-label">Editoras</div>
+  <div id="content"><p class="loading">Carregando dados...</p></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://jkkaaaiatsnascsgyecb.supabase.co',
+      'sb_publishable_jDzb_17E7ns76zgiRC1z7w_P0bumCgy'
+    );
+
+    const TRACKS = [
+      { id: 'basica',   title: 'Edição Básica',       color: '#d11550', lessons: ['b1','b2','b3','b4','b5','b6','b7'] },
+      { id: 'formatos', title: 'Entendendo Formatos',  color: '#8b5cf6', lessons: ['f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','f13','f14','f15','f16','f17','f18'] },
+      { id: 'avancada', title: 'Edição com IA',        color: '#f59e0b', lessons: ['a1','a2','a3','a4','a5','a6','a7'] },
+    ];
+
+    const LESSON_NAMES = {
+      b1:'Legendagem do Zero', b2:'Checklist de Qualidade de Áudio', b3:'Como Salvar um Áudio com Ruído',
+      b4:'Correção de Cor: Iluminando Rostos e Cenas Escuras', b5:'Legendas Dinâmicas no CapCut',
+      b6:'Transições: Quando Usar (e Quando Não Usar)', b7:'Autocorte: Eliminando Respiros e Pausas',
+      f1:'O Que é um Reels Tweet?', f2:'Entendendo o Direcionamento de Conteúdo', f3:'Onde Fazer e Onde Editar?',
+      f4:'Padrão de Qualidade e Entrega Final', f5:'O Que é um Reels Caixinha?',
+      f6:'Entendendo o Direcionamento de Conteúdo', f7:'Como e Onde Criar a Caixinha?',
+      f8:'Como Aplicar na Edição?', f9:'O Que é um Reels Tela Inteira?',
+      f10:'Entendendo o Direcionamento de Conteúdo', f11:'Como Fazer e Onde Editar?',
+      f12:'Como Baixar o Vídeo Sem Marca d\'Água?', f13:'O Que é o Reels Jacob Petry?',
+      f14:'Entendendo o Direcionamento de Conteúdo', f15:'Como Fazer na Prática?',
+      f16:'Legendas e Headlines no Lugar Certo', f17:'Onde Buscar as Imagens?',
+      f18:'Removendo o Fundo (Remove BG)',
+      a1:'CapCut e ElevenLabs na Prática', a2:'Criando Prompts que Funcionam',
+      a3:'Qual IA Utilizar?', a4:'Escolhendo o Frame Certo (Recorte e Divisão)',
+      a5:'Criando os Prompts', a6:'Gerando a Imagem', a7:'Animando na Prática',
+    };
+
+    const TOTAL = TRACKS.reduce((a, t) => a + t.lessons.length, 0);
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      const hoje = new Date();
+      const diff = hoje - d;
+      const mins = Math.floor(diff / 60000);
+      const hrs = Math.floor(diff / 3600000);
+      if (mins < 2) return 'Agora mesmo';
+      if (mins < 60) return `Há ${mins} min`;
+      if (hrs < 24) return `Hoje, ${d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+      if (hrs < 48) return `Ontem, ${d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+      return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session || session.user.email !== 'ana.linksy@gmail.com') {
+        window.location.href = 'dashboard.html'; return;
+      }
+
+      const [{ data: profiles }, { data: progress }] = await Promise.all([
+        sb.from('profiles').select('*').order('created_at', { ascending: true }),
+        sb.from('user_progress').select('*').order('completed_at', { ascending: false })
+      ]);
+
+      const team = (profiles || []).filter(u => u.email !== 'ana.linksy@gmail.com' && u.email !== 'nicoli.linksy@gmail.com');
+      const prog = progress || [];
+
+      const totalDone = prog.filter(p => team.find(u => u.id === p.user_id)).length;
+      const avgPct = team.length
+        ? Math.round(team.reduce((sum, u) => {
+            const done = prog.filter(p => p.user_id === u.id).length;
+            return sum + (done / TOTAL) * 100;
+          }, 0) / team.length)
+        : 0;
+
+      document.getElementById('stats-row').innerHTML = `
+        <div class="stat"><div class="stat-label">Editoras</div><div class="stat-value pink">${team.length}</div></div>
+        <div class="stat"><div class="stat-label">Aulas concluídas</div><div class="stat-value">${totalDone}</div></div>
+        <div class="stat"><div class="stat-label">Média geral</div><div class="stat-value pink">${avgPct}%</div></div>
+        <div class="stat"><div class="stat-label">Total de aulas</div><div class="stat-value">${TOTAL}</div></div>
+      `;
+
+      if (!team.length) {
+        document.getElementById('content').innerHTML = '<p class="loading">Nenhuma editora cadastrada ainda.</p>';
+        return;
+      }
+
+      const sorted = [...team].sort((a, b) => {
+        const dA = prog.filter(p => p.user_id === a.id).length;
+        const dB = prog.filter(p => p.user_id === b.id).length;
+        return dB - dA;
+      });
+
+      document.getElementById('content').innerHTML = sorted.map(user => {
+        const userProg = prog.filter(p => p.user_id === user.id);
+        const completedIds = new Set(userProg.map(p => p.lesson_id));
+        const totalDoneUser = userProg.length;
+        const pct = Math.round((totalDoneUser / TOTAL) * 100);
+        const joinedDate = user.created_at ? new Date(user.created_at).toLocaleDateString('pt-BR') : '';
+
+        const chips = TRACKS.map(t => {
+          const done = t.lessons.filter(l => completedIds.has(l)).length;
+          const tPct = Math.round((done / t.lessons.length) * 100);
+          return `<div class="trilha-chip" style="background:${t.color}0d">
+            <div class="trilha-chip-name">${t.title}</div>
+            <div class="trilha-chip-val" style="color:${t.color}">${done}/${t.lessons.length} · ${tPct}%</div>
+            <div class="trilha-bar"><div class="trilha-fill" style="width:${tPct}%;background:${t.color}"></div></div>
+          </div>`;
+        }).join('');
+
+        const recent = userProg.slice(0, 3);
+        const activityHtml = recent.length
+          ? recent.map(p => `
+              <div class="activity-item">
+                <span class="activity-aula">${LESSON_NAMES[p.lesson_id] || p.lesson_id}</span>
+                <span class="activity-time">${formatDate(p.completed_at)}</span>
+              </div>`).join('')
+          : '<p class="activity-empty">Nenhuma aula concluída ainda</p>';
+
+        return `<div class="editora-card">
+          <div class="editora-top">
+            <div>
+              <div class="editora-name">${user.full_name || user.email}</div>
+              ${joinedDate ? `<div class="editora-since">Entrou em ${joinedDate}</div>` : ''}
+            </div>
+            <div class="editora-pct">${totalDoneUser} aulas · ${pct}%</div>
+          </div>
+          <div class="trilhas-row">${chips}</div>
+          <div class="activity-wrap">
+            <div class="activity-label">Últimas atividades</div>
+            ${activityHtml}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    init();
+  </script>
+</body>
+</html>
