@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Linksy Treinamentos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #080808; min-height: 100vh; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #fff; padding: 48px 44px; }
+    .header { margin-bottom: 40px; }
+    .back { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.35); font-size: 13px; text-decoration: none; margin-bottom: 24px; transition: color 0.2s; }
+    .back:hover { color: #fff; }
+    h1 { font-size: 26px; font-weight: 600; margin-bottom: 6px; }
+    .sub { color: rgba(255,255,255,0.35); font-size: 14px; }
+    .badge { display: inline-block; background: rgba(209,21,80,0.12); color: #d11550; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; margin-left: 10px; vertical-align: middle; }
+
+    /* STATS ROW */
+    .stats { display: flex; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
+    .stat-card {
+      background: #0e0e0e;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 18px 22px;
+      min-width: 140px;
+    }
+    .stat-label { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-value { font-size: 26px; font-weight: 700; color: #fff; }
+    .stat-value.red { color: #d11550; }
+
+    /* USER CARDS */
+    .user-card {
+      background: #0e0e0e;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+    .user-card:hover { border-color: rgba(255,255,255,0.12); }
+    .user-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+    .user-email { font-size: 14px; font-weight: 500; color: #fff; }
+    .user-joined { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .user-total {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.04);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .tracks-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .track-chip {
+      border-radius: 8px;
+      padding: 10px 14px;
+      min-width: 130px;
+    }
+    .track-chip-name { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+    .track-chip-val { font-size: 14px; font-weight: 600; }
+    .track-chip-bar { margin-top: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; height: 3px; }
+    .track-chip-fill { height: 3px; border-radius: 3px; transition: width 0.4s; }
+
+    .loading { color: rgba(255,255,255,0.25); font-size: 14px; padding: 20px 0; }
+    .empty { color: rgba(255,255,255,0.2); font-size: 14px; text-align: center; padding: 60px 0; }
+  </style>
+</head>
+<body>
+  <a href="dashboard.html" class="back">← Voltar ao dashboard</a>
+  <div class="header">
+    <h1>Painel Administrativo <span class="badge">ADMIN</span></h1>
+    <p class="sub">Progresso de todos os editores cadastrados</p>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div id="content"><p class="loading">Carregando dados...</p></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://jkkaaaiatsnascsgyecb.supabase.co',
+      'sb_publishable_jDzb_17E7ns76zgiRC1z7w_P0bumCgy'
+    );
+
+    const TRACKS = [
+      { id: 'basica',   title: 'Edição Básica',  color: '#d11550', lessons: ['b1','b2','b3','b4','b5','b6'] },
+      { id: 'formatos', title: 'Edit & Formatos', color: '#8b5cf6', lessons: ['f1','f2','f3','f4'] },
+      { id: 'avancada', title: 'Edição Avançada', color: '#f59e0b', lessons: ['a1','a2','a3','a4'] },
+    ];
+    const TOTAL_LESSONS = TRACKS.reduce((a, t) => a + t.lessons.length, 0);
+
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session || session.user.email !== 'nicoli.linksy@gmail.com') {
+        window.location.href = 'dashboard.html'; return;
+      }
+
+      const [{ data: profiles }, { data: progress }] = await Promise.all([
+        sb.from('profiles').select('*').order('created_at', { ascending: true }),
+        sb.from('user_progress').select('*')
+      ]);
+
+      const usersData = (profiles || []).filter(u => u.email !== 'nicoli.linksy@gmail.com');
+      const prog = progress || [];
+
+      // Stats
+      const totalCompleted = prog.length;
+      const avgPct = usersData.length
+        ? Math.round(usersData.reduce((sum, u) => {
+            const done = prog.filter(p => p.user_id === u.id).length;
+            return sum + (done / TOTAL_LESSONS) * 100;
+          }, 0) / usersData.length)
+        : 0;
+
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card"><div class="stat-label">Editores</div><div class="stat-value red">${usersData.length}</div></div>
+        <div class="stat-card"><div class="stat-label">Aulas concluídas</div><div class="stat-value">${totalCompleted}</div></div>
+        <div class="stat-card"><div class="stat-label">Média de progresso</div><div class="stat-value red">${avgPct}%</div></div>
+        <div class="stat-card"><div class="stat-label">Total de aulas</div><div class="stat-value">${TOTAL_LESSONS}</div></div>
+      `;
+
+      if (!usersData.length) {
+        document.getElementById('content').innerHTML = '<p class="empty">Nenhum editor cadastrado ainda.</p>';
+        return;
+      }
+
+      const sorted = [...usersData].sort((a, b) => {
+        const doneA = prog.filter(p => p.user_id === a.id).length;
+        const doneB = prog.filter(p => p.user_id === b.id).length;
+        return doneB - doneA;
+      });
+
+      document.getElementById('content').innerHTML = sorted.map(user => {
+        const userProg = prog.filter(p => p.user_id === user.id);
+        const completedIds = new Set(userProg.map(p => p.lesson_id));
+        const totalDone = userProg.length;
+        const pct = Math.round((totalDone / TOTAL_LESSONS) * 100);
+        const joinedDate = user.created_at ? new Date(user.created_at).toLocaleDateString('pt-BR') : '';
+
+        const chips = TRACKS.map(t => {
+          const done = t.lessons.filter(l => completedIds.has(l)).length;
+          const tPct = Math.round((done / t.lessons.length) * 100);
+          return `<div class="track-chip" style="background:${t.color}0d">
+            <div class="track-chip-name">${t.title}</div>
+            <div class="track-chip-val" style="color:${t.color}">${done}/${t.lessons.length} · ${tPct}%</div>
+            <div class="track-chip-bar"><div class="track-chip-fill" style="width:${tPct}%;background:${t.color}"></div></div>
+          </div>`;
+        }).join('');
+
+        return `<div class="user-card">
+          <div class="user-row">
+            <div>
+              <div class="user-email">${user.full_name ? user.full_name + ' — ' : ''}${user.email || user.id}</div>
+              ${joinedDate ? `<div class="user-joined">Entrou em ${joinedDate}</div>` : ''}
+            </div>
+            <div class="user-total">${totalDone} de ${TOTAL_LESSONS} aulas · ${pct}%</div>
+          </div>
+          <div class="tracks-row">${chips}</div>
+        </div>`;
+      }).join('');
+    }
+
+    init();
+  </script>
+</body>
+</html>

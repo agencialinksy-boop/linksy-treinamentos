@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linksy Treinamentos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #080808;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: #d11550;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float-p linear infinite;
+    }
+    @keyframes float-p {
+      0%   { opacity: 0;   transform: translateY(0) translateX(0); }
+      20%  { opacity: 0.8; }
+      80%  { opacity: 0.3; }
+      100% { opacity: 0;   transform: translateY(-450px) translateX(var(--dx)); }
+    }
+    .glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(209,21,80,0.06) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .brand {
+      font-size: 11px;
+      letter-spacing: 6px;
+      color: #d11550;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadein 1s 0.3s forwards;
+    }
+    h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadein 1s 0.6s forwards;
+    }
+    .sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 52px;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadein 1s 0.9s forwards;
+    }
+    .btn {
+      display: inline-block;
+      padding: 16px 50px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadein 1s 1.2s forwards;
+      transition: all 0.35s ease;
+    }
+    .btn:hover {
+      border-color: #d11550;
+      color: #d11550;
+      box-shadow: 0 0 40px rgba(209,21,80,0.18);
+      transform: translateY(-2px);
+    }
+    @keyframes fadein { to { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="particles" id="pts"></div>
+  <div class="content">
+    <p class="brand">Agência Linksy</p>
+    <h1>Plataforma de<br>Treinamentos</h1>
+    <p class="sub">Domine a edição de vídeo com trilhas exclusivas<br>criadas pelo time audiovisual</p>
+    <a href="login.html" class="btn">Entrar na plataforma</a>
+  </div>
+  <script>
+    const pts = document.getElementById('pts');
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = 1.5 + Math.random() * 2;
+      p.style.cssText = `
+        left:${Math.random()*100}%;
+        bottom:${-5 + Math.random()*15}%;
+        width:${size}px;height:${size}px;
+        --dx:${(Math.random()-.5)*140}px;
+        animation-duration:${5+Math.random()*6}s;
+        animation-delay:${Math.random()*8}s;
+      `;
+      pts.appendChild(p);
+    }
+  </script>
+</body>
+</html>

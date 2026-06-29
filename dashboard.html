@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Linksy Treinamentos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #080808; min-height: 100vh; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #fff; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 220px;
+      background: #0c0c0c;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 16px;
+      z-index: 100;
+    }
+    .logo { font-size: 17px; font-weight: 700; color: #fff; }
+    .logo span { color: #d11550; }
+    .logo-sub { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 36px; margin-top: 2px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.45);
+      font-size: 13.5px;
+      cursor: pointer;
+      margin-bottom: 2px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.85); }
+    .nav-item.active { background: rgba(209,21,80,0.1); color: #d11550; }
+    .nav-bottom { margin-top: auto; }
+    .user-box {
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .user-email { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 10px; word-break: break-all; line-height: 1.4; }
+    .logout-btn {
+      font-size: 12px;
+      color: rgba(209,21,80,0.7);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .logout-btn:hover { color: #d11550; }
+
+    /* MAIN */
+    .main { margin-left: 220px; padding: 48px 44px; }
+    .page-header { margin-bottom: 36px; }
+    .page-header h1 { font-size: 26px; font-weight: 600; margin-bottom: 6px; }
+    .page-header p { color: rgba(255,255,255,0.35); font-size: 14px; }
+
+    /* OVERALL PROGRESS */
+    .overall-bar {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 22px 28px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .overall-label { font-size: 13px; color: rgba(255,255,255,0.4); min-width: 130px; }
+    .overall-track { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 5px; }
+    .overall-fill { height: 5px; border-radius: 4px; background: linear-gradient(90deg, #d11550, #ff4d7a); transition: width 0.6s; }
+    .overall-pct { font-size: 14px; font-weight: 600; color: #d11550; min-width: 40px; text-align: right; }
+
+    /* TRACKS GRID */
+    .tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+    .track-card {
+      background: #0e0e0e;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .track-card:hover { border-color: rgba(255,255,255,0.12); }
+
+    .track-header { padding: 22px 22px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .track-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .track-title { font-size: 17px; font-weight: 600; margin-bottom: 16px; color: #fff; }
+    .progress-bg { background: rgba(255,255,255,0.06); border-radius: 4px; height: 4px; margin-bottom: 8px; }
+    .progress-fill { height: 4px; border-radius: 4px; transition: width 0.5s ease; }
+    .progress-text { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+    /* LESSONS */
+    .lessons { padding: 6px 0; }
+    .lesson {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 22px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      user-select: none;
+    }
+    .lesson:last-child { border-bottom: none; }
+    .lesson:hover { background: rgba(255,255,255,0.025); }
+    .check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      transition: all 0.2s;
+    }
+    .check.done { border-color: #d11550; background: #d11550; }
+    .lesson-title { font-size: 13.5px; color: rgba(255,255,255,0.65); transition: color 0.2s; line-height: 1.4; }
+    .lesson:hover .lesson-title { color: rgba(255,255,255,0.9); }
+    .lesson.completed .lesson-title { color: rgba(255,255,255,0.28); text-decoration: line-through; }
+
+    /* LOADING */
+    .loading { color: rgba(255,255,255,0.25); font-size: 14px; padding: 20px 0; }
+
+    @media (max-width: 768px) {
+      .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; }
+      .main { margin-left: 0; padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <div class="logo">LINK<span>SY</span></div>
+      <div class="logo-sub">Treinamentos</div>
+    </div>
+    <a href="dashboard.html" class="nav-item active">📚 Trilhas</a>
+    <div id="admin-nav"></div>
+    <div class="nav-bottom">
+      <div class="user-box">
+        <p class="user-email" id="user-email">...</p>
+        <button class="logout-btn" onclick="logout()">Sair da conta</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <h1>Trilhas de Treinamento</h1>
+      <p id="welcome-msg">Acompanhe seu progresso em cada trilha</p>
+    </div>
+    <div class="overall-bar" id="overall-bar" style="display:none">
+      <span class="overall-label">Progresso geral</span>
+      <div class="overall-track"><div class="overall-fill" id="overall-fill" style="width:0%"></div></div>
+      <span class="overall-pct" id="overall-pct">0%</span>
+    </div>
+    <div class="tracks" id="tracks">
+      <p class="loading">Carregando trilhas...</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://jkkaaaiatsnascsgyecb.supabase.co',
+      'sb_publishable_jDzb_17E7ns76zgiRC1z7w_P0bumCgy'
+    );
+
+    const TRACKS = [
+      {
+        id: 'basica',
+        title: 'Edição Básica',
+        color: '#d11550',
+        lessons: [
+          { id: 'b1', title: 'Entendendo a Timeline' },
+          { id: 'b2', title: 'Cortes e Ritmo' },
+          { id: 'b3', title: 'Transições' },
+          { id: 'b4', title: 'Correção de Cor Básica' },
+          { id: 'b5', title: 'Tratamento de Áudio' },
+          { id: 'b6', title: 'Tweet Style Video' },
+        ]
+      },
+      {
+        id: 'formatos',
+        title: 'Edit & Formatos',
+        color: '#8b5cf6',
+        lessons: [
+          { id: 'f1', title: 'Reels e Shorts' },
+          { id: 'f2', title: 'Talking Head' },
+          { id: 'f3', title: 'Jacob Petry Style (Tela Dividida)' },
+          { id: 'f4', title: 'Podcast Tela Dividida' },
+        ]
+      },
+      {
+        id: 'avancada',
+        title: 'Edição Avançada',
+        color: '#f59e0b',
+        lessons: [
+          { id: 'a1', title: 'Motion Graphics' },
+          { id: 'a2', title: 'Colorização Avançada' },
+          { id: 'a3', title: 'Efeitos Visuais' },
+          { id: 'a4', title: 'Transições Complexas' },
+        ]
+      }
+    ];
+
+    let completedLessons = new Set();
+    let userId = null;
+
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+
+      userId = session.user.id;
+      const email = session.user.email;
+      document.getElementById('user-email').textContent = email;
+
+      const firstName = session.user.user_metadata?.full_name?.split(' ')[0] || '';
+      if (firstName) document.getElementById('welcome-msg').textContent = `Olá, ${firstName}! Acompanhe seu progresso.`;
+
+      if (email === 'nicoli.linksy@gmail.com') {
+        document.getElementById('admin-nav').innerHTML =
+          '<a href="admin.html" class="nav-item">⚙️ Painel Admin</a>';
+      }
+
+      const { data } = await sb.from('user_progress').select('lesson_id').eq('user_id', userId);
+      if (data) data.forEach(r => completedLessons.add(r.lesson_id));
+
+      renderAll();
+    }
+
+    function renderAll() {
+      const totalLessons = TRACKS.reduce((a, t) => a + t.lessons.length, 0);
+      const totalDone = completedLessons.size;
+      const pct = Math.round((totalDone / totalLessons) * 100);
+      document.getElementById('overall-bar').style.display = 'flex';
+      document.getElementById('overall-fill').style.width = pct + '%';
+      document.getElementById('overall-pct').textContent = pct + '%';
+
+      const container = document.getElementById('tracks');
+      container.innerHTML = '';
+
+      TRACKS.forEach(track => {
+        const done = track.lessons.filter(l => completedLessons.has(l.id)).length;
+        const trackPct = Math.round((done / track.lessons.length) * 100);
+
+        const card = document.createElement('div');
+        card.className = 'track-card';
+        card.innerHTML = `
+          <div class="track-header">
+            <div class="track-badge" style="background:${track.color}18;color:${track.color}">${track.id.toUpperCase()}</div>
+            <div class="track-title">${track.title}</div>
+            <div class="progress-bg">
+              <div class="progress-fill" style="width:${trackPct}%;background:${track.color}"></div>
+            </div>
+            <div class="progress-text">${done} de ${track.lessons.length} aulas concluídas · ${trackPct}%</div>
+          </div>
+          <div class="lessons">
+            ${track.lessons.map(l => `
+              <div class="lesson ${completedLessons.has(l.id) ? 'completed' : ''}" data-id="${l.id}">
+                <div class="check ${completedLessons.has(l.id) ? 'done' : ''}">${completedLessons.has(l.id) ? '✓' : ''}</div>
+                <span class="lesson-title">${l.title}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        card.querySelectorAll('.lesson').forEach(el => {
+          el.addEventListener('click', () => toggleLesson(el.dataset.id));
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    async function toggleLesson(lessonId) {
+      const isDone = completedLessons.has(lessonId);
+      if (isDone) {
+        await sb.from('user_progress').delete().eq('user_id', userId).eq('lesson_id', lessonId);
+        completedLessons.delete(lessonId);
+      } else {
+        await sb.from('user_progress').insert({ user_id: userId, lesson_id: lessonId });
+        completedLessons.add(lessonId);
+      }
+      renderAll();
+    }
+
+    async function logout() {
+      await sb.auth.signOut();
+      window.location.href = 'index.html';
+    }
+
+    init();
+  </script>
+</body>
+</html>

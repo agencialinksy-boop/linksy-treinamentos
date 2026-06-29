@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Linksy Treinamentos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #080808;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(209,21,80,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .card {
+      position: relative;
+      z-index: 1;
+      background: #0e0e0e;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 48px;
+      width: 100%;
+      max-width: 420px;
+      margin: 24px;
+    }
+    .logo-text {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: #d11550;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+    h2 { color: #fff; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .desc { color: rgba(255,255,255,0.35); font-size: 14px; margin-bottom: 32px; }
+    .tabs { display: flex; margin-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .tab {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.35);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .tab.active { color: #d11550; border-bottom-color: #d11550; }
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 7px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 18px;
+      transition: border-color 0.2s;
+    }
+    input::placeholder { color: rgba(255,255,255,0.2); }
+    input:focus { border-color: rgba(209,21,80,0.6); background: rgba(255,255,255,0.05); }
+    .btn {
+      width: 100%;
+      background: #d11550;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.5px;
+    }
+    .btn:hover { background: #e8185a; }
+    .btn:active { transform: scale(0.99); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .msg { font-size: 13px; text-align: center; margin-top: 16px; min-height: 20px; line-height: 1.5; }
+    .msg.error { color: #ff6b6b; }
+    .msg.success { color: #4ade80; }
+    .back { display: block; text-align: center; margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.3); text-decoration: none; }
+    .back:hover { color: rgba(255,255,255,0.6); }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="card">
+    <p class="logo-text">Linksy Treinamentos</p>
+    <h2 id="form-title">Entrar</h2>
+    <p class="desc" id="form-desc">Acesse sua conta para continuar</p>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('login')">Login</div>
+      <div class="tab" onclick="switchTab('register')">Cadastro</div>
+    </div>
+    <div id="name-field" style="display:none">
+      <label>Nome completo</label>
+      <input type="text" id="name" placeholder="Seu nome">
+    </div>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="seu@email.com">
+    <label>Senha</label>
+    <input type="password" id="password" placeholder="••••••••">
+    <button class="btn" id="submit-btn" onclick="handleAuth()">Entrar</button>
+    <p class="msg" id="msg"></p>
+    <a href="index.html" class="back">← Voltar ao início</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://jkkaaaiatsnascsgyecb.supabase.co',
+      'sb_publishable_jDzb_17E7ns76zgiRC1z7w_P0bumCgy'
+    );
+
+    let mode = 'login';
+
+    function switchTab(m) {
+      mode = m;
+      document.querySelectorAll('.tab').forEach((t, i) => {
+        t.classList.toggle('active', (m === 'login' && i === 0) || (m === 'register' && i === 1));
+      });
+      document.getElementById('form-title').textContent = m === 'login' ? 'Entrar' : 'Criar conta';
+      document.getElementById('form-desc').textContent = m === 'login'
+        ? 'Acesse sua conta para continuar'
+        : 'Cadastre-se na plataforma';
+      document.getElementById('submit-btn').textContent = m === 'login' ? 'Entrar' : 'Cadastrar';
+      document.getElementById('name-field').style.display = m === 'register' ? 'block' : 'none';
+      document.getElementById('msg').textContent = '';
+    }
+
+    async function handleAuth() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('msg');
+      const btn = document.getElementById('submit-btn');
+
+      if (!email || !password) { msg.textContent = 'Preencha email e senha.'; msg.className = 'msg error'; return; }
+
+      btn.disabled = true;
+      btn.textContent = mode === 'login' ? 'Entrando...' : 'Cadastrando...';
+      msg.textContent = '';
+
+      if (mode === 'login') {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) {
+          msg.textContent = 'Email ou senha incorretos.';
+          msg.className = 'msg error';
+          btn.disabled = false;
+          btn.textContent = 'Entrar';
+          return;
+        }
+        window.location.href = 'dashboard.html';
+      } else {
+        const name = document.getElementById('name').value.trim();
+        const { error } = await sb.auth.signUp({
+          email, password,
+          options: { data: { full_name: name } }
+        });
+        if (error) {
+          msg.textContent = error.message;
+          msg.className = 'msg error';
+          btn.disabled = false;
+          btn.textContent = 'Cadastrar';
+          return;
+        }
+        msg.textContent = '✓ Conta criada! Verifique seu email para confirmar.';
+        msg.className = 'msg success';
+        btn.disabled = false;
+        btn.textContent = 'Cadastrar';
+      }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
+
+    sb.auth.getSession().then(({ data }) => {
+      if (data.session) window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>
