@@ -109,6 +109,14 @@
 
     const TOTAL = TRACKS.reduce((a, t) => a + t.lessons.length, 0);
 
+    function formatDuration(secs) {
+      if (!secs || secs < 60) return secs ? `${secs}s` : '—';
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      if (h > 0) return `${h}h ${m}min`;
+      return `${m}min`;
+    }
+
     function formatDate(iso) {
       if (!iso) return '';
       const d = new Date(iso);
@@ -129,9 +137,10 @@
         window.location.href = 'dashboard.html'; return;
       }
 
-      const [{ data: profiles }, { data: progress }] = await Promise.all([
+      const [{ data: profiles }, { data: progress }, { data: sessions }] = await Promise.all([
         sb.from('profiles').select('*').order('created_at', { ascending: true }),
-        sb.from('user_progress').select('*').order('completed_at', { ascending: false })
+        sb.from('user_progress').select('*').order('completed_at', { ascending: false }),
+        sb.from('sessions').select('*').order('started_at', { ascending: false })
       ]);
 
       const team = (profiles || []).filter(u => u.email !== 'ana.linksy@gmail.com' && u.email !== 'nicoli.linksy@gmail.com');
@@ -189,6 +198,19 @@
               </div>`).join('')
           : '<p class="activity-empty">Nenhuma aula concluída ainda</p>';
 
+        const userSessions = (sessions || []).filter(s => s.user_id === user.id).slice(0, 3);
+        const sessionsHtml = userSessions.length
+          ? userSessions.map(s => {
+              const entrada = formatDate(s.started_at);
+              const saida = s.ended_at ? formatDate(s.ended_at) : '<span style="color:#d11550">Online agora</span>';
+              const duracao = s.duration_seconds ? formatDuration(s.duration_seconds) : (s.ended_at ? '—' : '');
+              return `<div class="activity-item">
+                <span class="activity-aula">Entrada: ${entrada}</span>
+                <span class="activity-time">Saída: ${saida}${duracao ? ' · ' + duracao : ''}</span>
+              </div>`;
+            }).join('')
+          : '<p class="activity-empty">Nenhum acesso registrado ainda</p>';
+
         return `<div class="editora-card">
           <div class="editora-top">
             <div>
@@ -201,6 +223,10 @@
           <div class="activity-wrap">
             <div class="activity-label">Últimas atividades</div>
             ${activityHtml}
+          </div>
+          <div class="activity-wrap" style="margin-top:10px">
+            <div class="activity-label">Histórico de acesso</div>
+            ${sessionsHtml}
           </div>
         </div>`;
       }).join('');

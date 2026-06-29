@@ -423,12 +423,38 @@
     let completedLessons = new Set();
     let userId = null;
     let activeTrack = null;
+    let sessionId = null;
+    let accessToken = null;
+
+    async function startSession() {
+      const { data } = await sb.from('sessions').insert({ user_id: userId }).select().single();
+      if (data) {
+        sessionId = data.id;
+        sessionStorage.setItem('lk_sid', data.id);
+        sessionStorage.setItem('lk_start', Date.now().toString());
+      }
+    }
+
+    function endSessionBeacon() {
+      const sid = sessionId || sessionStorage.getItem('lk_sid');
+      const start = parseInt(sessionStorage.getItem('lk_start') || '0');
+      if (!sid || !accessToken) return;
+      const duration = start ? Math.round((Date.now() - start) / 1000) : null;
+      const body = JSON.stringify({ ended_at: new Date().toISOString(), duration_seconds: duration });
+      navigator.sendBeacon(
+        `https://jkkaaaiatsnascsgyecb.supabase.co/rest/v1/sessions?id=eq.${sid}`,
+        new Blob([body], { type: 'application/json' })
+      );
+      sessionStorage.removeItem('lk_sid');
+      sessionStorage.removeItem('lk_start');
+    }
 
     async function init() {
       const { data: { session } } = await sb.auth.getSession();
       if (!session) { window.location.href = 'login.html'; return; }
 
       userId = session.user.id;
+      accessToken = session.access_token;
       const email = session.user.email;
       document.getElementById('nav-email').textContent = email;
 
@@ -448,6 +474,13 @@
 
       const { data } = await sb.from('user_progress').select('lesson_id').eq('user_id', userId);
       if (data) data.forEach(r => completedLessons.add(r.lesson_id));
+
+      await startSession();
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') endSessionBeacon();
+      });
+      window.addEventListener('pagehide', endSessionBeacon);
 
       renderCards();
     }
@@ -554,6 +587,14 @@
     }
 
     async function logout() {
+      const sid = sessionId || sessionStorage.getItem('lk_sid');
+      const start = parseInt(sessionStorage.getItem('lk_start') || '0');
+      if (sid) {
+        const duration = start ? Math.round((Date.now() - start) / 1000) : null;
+        await sb.from('sessions').update({ ended_at: new Date().toISOString(), duration_seconds: duration }).eq('id', sid);
+        sessionStorage.removeItem('lk_sid');
+        sessionStorage.removeItem('lk_start');
+      }
       await sb.auth.signOut();
       window.location.href = 'index.html';
     }
