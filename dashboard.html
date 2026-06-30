@@ -70,6 +70,89 @@
     .overall-fill { height: 5px; border-radius: 4px; background: linear-gradient(90deg, #d11550, #ff4d7a); transition: width 0.8s ease; }
     .overall-pct { font-size: 14px; font-weight: 700; color: #d11550; min-width: 36px; }
 
+    /* COURSE SELECT */
+    .course-select-section {
+      background: linear-gradient(135deg, #1a0008 0%, #3d0018 35%, #d11550 65%, #1a0008 100%);
+      padding: 52px 40px;
+    }
+    .course-select-eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .course-select-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .course-cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .course-card {
+      background: rgba(10,0,5,0.55);
+      border: 1px solid rgba(200,200,220,0.25);
+      border-radius: 16px;
+      padding: 28px 22px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .course-card.course-active {
+      border-color: rgba(210,210,230,0.6);
+      cursor: pointer;
+    }
+    .course-card.course-active:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.8); }
+    .course-card.course-locked { opacity: 0.6; }
+    .course-card-line {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #d11550, transparent);
+    }
+    .course-card-line-locked {
+      background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
+    }
+    .course-lock-icon { font-size: 16px; margin-bottom: 6px; opacity: 0.4; }
+    .course-card-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #d11550; margin-bottom: 8px; }
+    .course-card-tag-locked { color: rgba(255,255,255,0.3); }
+    .course-card-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .course-card-role { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+    .course-card-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.65; margin-bottom: 20px; }
+    .course-card-badge {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      padding: 4px 14px; border-radius: 20px;
+      background: rgba(209,21,80,0.12);
+      color: #d11550;
+      border: 1px solid rgba(209,21,80,0.25);
+    }
+    .course-card-badge-soon {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.1);
+    }
+    .course-card-btn {
+      margin-top: 16px;
+      padding: 10px 0;
+      text-align: center;
+      border-radius: 30px;
+      background: #d11550;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
     /* SECTION */
     .section { padding: 44px 40px 60px; }
     .section-label { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 28px; }
@@ -320,8 +403,47 @@
     </div>
   </div>
 
+  <!-- ESCOLHA O CURSO -->
+  <div class="course-select-section">
+    <p class="course-select-eyebrow">Bem-vinda à plataforma</p>
+    <h2 class="course-select-title">Escolha o seu curso</h2>
+    <div class="course-cards-row">
+
+      <div class="course-card course-active" onclick="document.getElementById('trilhas-section').scrollIntoView({behavior:'smooth'})">
+        <div class="course-card-line"></div>
+        <div class="course-card-tag">Audiovisual</div>
+        <div class="course-card-name">Ana Lima</div>
+        <div class="course-card-role">Líder do Time Audiovisual</div>
+        <div class="course-card-desc">Edição profissional, formatos, IA aplicada e direção. Tudo que o time precisa para entregar no mais alto nível.</div>
+        <span class="course-card-badge">Disponível agora</span>
+        <div class="course-card-btn">Acessar trilhas</div>
+      </div>
+
+      <div class="course-card course-locked">
+        <div class="course-card-line course-card-line-locked"></div>
+        <div class="course-lock-icon">🔒</div>
+        <div class="course-card-tag course-card-tag-locked">Estratégia</div>
+        <div class="course-card-name">Nicoli Martinazzo</div>
+        <div class="course-card-role">Líder do Time de Estratégia</div>
+        <div class="course-card-desc">Estratégia de conteúdo, posicionamento digital e crescimento orgânico para os clientes da Linksy.</div>
+        <span class="course-card-badge course-card-badge-soon">Em breve</span>
+      </div>
+
+      <div class="course-card course-locked">
+        <div class="course-card-line course-card-line-locked"></div>
+        <div class="course-lock-icon">🔒</div>
+        <div class="course-card-tag course-card-tag-locked">Mentoria</div>
+        <div class="course-card-name">Damiana Thiesen</div>
+        <div class="course-card-role">CEO & Fundadora</div>
+        <div class="course-card-desc">Presença digital, rotina de conteúdo e mindset empreendedor. Aprenda diretamente com quem fundou a Linksy.</div>
+        <span class="course-card-badge course-card-badge-soon">Em breve</span>
+      </div>
+
+    </div>
+  </div>
+
   <!-- CARDS -->
-  <div class="section">
+  <div class="section" id="trilhas-section">
     <p class="section-label">Trilhas de treinamento</p>
     <div class="cards-grid" id="cards-grid">
       <p class="loading">Carregando trilhas...</p>
