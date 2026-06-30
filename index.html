@@ -295,14 +295,25 @@
       targetIndex = Math.round(x * (FRAMES.length - 1));
     });
 
+    let lastMove = 0;
+
     function scrub() {
+      const now = Date.now();
       const diff = targetIndex - currentIndex;
       if (Math.abs(diff) >= 1) {
-        currentIndex += diff > 0 ? 1 : -1;
+        if (now - lastMove > 80) {
+          // mouse parado — pula direto para o frame certo
+          currentIndex = targetIndex;
+        } else {
+          // mouse em movimento — avança suavemente
+          currentIndex += diff > 0 ? 1 : -1;
+        }
         img.src = FRAMES[currentIndex];
       }
       rafId = requestAnimationFrame(scrub);
     }
+
+    hero.addEventListener('mousemove', () => { lastMove = Date.now(); });
 
     scrub();
   </script>
