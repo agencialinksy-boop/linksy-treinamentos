@@ -282,22 +282,37 @@
     const hero = document.getElementById('hero');
     let ready = false;
 
+    let targetTime = 0;
+    let currentTime = 0;
+    let rafId = null;
+
     video.addEventListener('canplaythrough', () => {
       video.play().then(() => {
         video.pause();
         video.currentTime = 0;
         ready = true;
+        smoothScrub();
       }).catch(() => {
         ready = true;
+        smoothScrub();
       });
     });
 
     hero.addEventListener('mousemove', (e) => {
-      if (!ready || !video.duration) return;
+      if (!video.duration) return;
       const rect = hero.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      video.currentTime = Math.max(0, Math.min(video.duration, x * video.duration));
+      const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      targetTime = x * video.duration;
     });
+
+    function smoothScrub() {
+      const diff = targetTime - currentTime;
+      if (Math.abs(diff) > 0.01) {
+        currentTime += diff * 0.12;
+        video.currentTime = currentTime;
+      }
+      rafId = requestAnimationFrame(smoothScrub);
+    }
   </script>
 </body>
 </html>
