@@ -73,6 +73,11 @@
     /* COURSE SELECT */
     .course-select-section {
       background: linear-gradient(135deg, #1a0008 0%, #3d0018 35%, #d11550 65%, #1a0008 100%);
+      min-height: calc(100vh - 60px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       padding: 52px 40px;
     }
     .course-select-eyebrow {
@@ -393,7 +398,7 @@
   </nav>
 
   <!-- HERO -->
-  <div class="hero">
+  <div class="hero" id="hero-section" style="display:none">
     <p class="hero-welcome">Bem-vinda de volta</p>
     <h1 class="hero-title" id="hero-title">Suas <span>trilhas</span></h1>
     <div class="overall-bar" id="overall-bar" style="display:none">
@@ -404,12 +409,12 @@
   </div>
 
   <!-- ESCOLHA O CURSO -->
-  <div class="course-select-section">
+  <div class="course-select-section" id="course-select-section">
     <p class="course-select-eyebrow">Bem-vinda à plataforma</p>
     <h2 class="course-select-title">Escolha o seu curso</h2>
     <div class="course-cards-row">
 
-      <div class="course-card course-active" onclick="document.getElementById('trilhas-section').scrollIntoView({behavior:'smooth'})">
+      <div class="course-card course-active" onclick="document.getElementById('course-select-section').style.display='none'; document.getElementById('hero-section').style.display='block'; document.getElementById('trilhas-section').style.display='block'">
         <div class="course-card-line"></div>
         <div class="course-card-tag">Audiovisual</div>
         <div class="course-card-name">Ana Lima</div>
@@ -443,7 +448,7 @@
   </div>
 
   <!-- CARDS -->
-  <div class="section" id="trilhas-section">
+  <div class="section" id="trilhas-section" style="display:none">
     <p class="section-label">Trilhas de treinamento</p>
     <div class="cards-grid" id="cards-grid">
       <p class="loading">Carregando trilhas...</p>
