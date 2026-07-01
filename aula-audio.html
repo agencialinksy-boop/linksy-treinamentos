@@ -26,17 +26,24 @@
     .back { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
     .back:hover { color: #fff; }
 
-    @keyframes pulo { 0%,100%{transform:translateY(0px) scale(1)} 40%{transform:translateY(-28px) scale(1.04)} 60%{transform:translateY(-20px) scale(1.02)} }
-    @keyframes sombra { 0%,100%{transform:scaleX(1); opacity:0.4} 40%{transform:scaleX(0.7); opacity:0.15} }
+    @keyframes float { 0%,100%{transform:translateY(0px) rotate(-3deg)} 50%{transform:translateY(-22px) rotate(3deg)} }
 
-    .hero { min-height: 100vh; padding: 60px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; text-align: center; }
-    .modulo-tag { font-size: 11px; letter-spacing: 5px; color: rgba(255,255,255,0.4); text-transform: uppercase; position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 5; white-space: nowrap; }
-    .titulo-top { font-size: clamp(52px, 7vw, 100px); font-weight: 900; line-height: 1; letter-spacing: -2px; text-transform: uppercase; color: #fff; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -160%); z-index: 4; white-space: nowrap; text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
-    .hero-fone { width: clamp(320px, 46vw, 640px); object-fit: contain; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; pointer-events: none; }
-    .titulo-bottom { font-size: clamp(52px, 7vw, 100px); font-weight: 900; line-height: 1; letter-spacing: -2px; text-transform: uppercase; position: absolute; top: 50%; left: 50%; transform: translate(-50%, 60%); z-index: 2; white-space: nowrap; background-image: url('FONE.png'); background-size: clamp(320px, 46vw, 640px) auto; background-position: center center; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
-    .aula-intro { font-size: 16px; color: rgba(255,255,255,0.35); line-height: 1.8; max-width: 460px; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 5; width: 90%; }
+    .hero { min-height: 100vh; padding: 0 80px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; overflow: hidden; }
+    .hero-left { position: relative; z-index: 2; }
+    .hero-modulo { font-size: 11px; letter-spacing: 5px; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 28px; display: block; }
+    .hero-titulo { font-size: clamp(48px, 6vw, 88px); font-weight: 900; line-height: 1; letter-spacing: -2px; text-transform: uppercase; color: #fff; margin-bottom: 24px; }
+    .hero-titulo span { color: #d11550; }
+    .hero-desc { font-size: 16px; color: rgba(255,255,255,0.4); line-height: 1.8; max-width: 420px; margin-bottom: 40px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(209,21,80,0.12); border: 1px solid rgba(209,21,80,0.3); border-radius: 30px; padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #d11550; }
+    .hero-right { position: relative; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .hero-fone { width: clamp(340px, 48vw, 680px); object-fit: contain; animation: float 5s ease-in-out infinite; position: relative; z-index: 2; filter: drop-shadow(0 40px 80px rgba(209,21,80,0.35)); }
+    .hero-glow { position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(209,21,80,0.25) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; }
     .hero-app-label { display: none; }
     .hero-logo-wrap { display: none; }
+    .modulo-tag { display: none; }
+    .titulo-top { display: none; }
+    .titulo-bottom { display: none; }
+    .aula-intro { display: none; }
 
     .body { padding: 0 0 100px; position: relative; z-index: 1; }
 
@@ -97,20 +104,16 @@
   </nav>
 
   <div class="hero">
-    <div class="modulo-tag">Módulo 1 — Edição Básica</div>
-    <div class="titulo-top">Qualidade</div>
-    <img class="hero-fone" src="FONE.png" alt="">
-    <div class="titulo-bottom">de Áudio</div>
-    <div class="aula-intro">Saiba o que fazer com o áudio do cliente: áudio bom, com ruído ou voz com falhas.</div>
-
-    <svg style="display:none">
-      <filter id="grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-        <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-        <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay" result="blend"/>
-        <feComposite in="blend" in2="SourceGraphic" operator="in"/>
-      </filter>
-    </svg>
+    <div class="hero-left">
+      <span class="hero-modulo">Módulo 1 — Edição Básica</span>
+      <h1 class="hero-titulo">Qualidade<br><span>de Áudio</span></h1>
+      <p class="hero-desc">Saiba o que fazer com o áudio do cliente: áudio bom, com ruído ou voz com falhas.</p>
+      <div class="hero-badge">&#9654; Checklist CapCut</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-glow"></div>
+      <img class="hero-fone" src="FONE.png" alt="">
+    </div>
   </div>
 
   <div class="body">
