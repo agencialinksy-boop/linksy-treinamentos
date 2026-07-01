@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storymaker do Zero — Linksy Treinamentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+    @keyframes float { 0%,100%{transform:translateY(0px) rotate(-3deg)} 50%{transform:translateY(-22px) rotate(3deg)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; }
+
+    /* TOPBAR */
+    .topbar { background: rgba(0,0,0,0.88); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 48px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #fff; text-decoration: none; }
+    .logo span { color: #d11550; }
+    .back { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
+    .back:hover { color: #fff; }
+
+    /* HERO */
+    .hero { min-height: 100vh; padding: 0 80px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; overflow: hidden; }
+    .hero-left { position: relative; z-index: 2; }
+    .hero-modulo { font-size: 11px; letter-spacing: 5px; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 28px; display: block; }
+    .hero-titulo { font-size: clamp(48px, 6vw, 88px); font-weight: 900; line-height: 1; letter-spacing: -2px; text-transform: uppercase; color: #fff; margin-bottom: 24px; }
+    .hero-titulo span { color: #d11550; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 700; text-transform: none; display: block; }
+    .hero-desc { font-size: 16px; color: rgba(255,255,255,0.4); line-height: 1.8; max-width: 420px; margin-bottom: 40px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(209,21,80,0.12); border: 1px solid rgba(209,21,80,0.3); border-radius: 30px; padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #d11550; }
+    .hero-right { display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .hero-img { width: clamp(340px, 46vw, 640px); object-fit: contain; animation: float 5s ease-in-out infinite; filter: drop-shadow(0 40px 80px rgba(0,0,0,0.5)); }
+
+    /* BODY */
+    .body { padding: 0 0 100px; position: relative; z-index: 1; }
+
+    /* CENÁRIO BANNER */
+    .parte-banner { background: url('fundorosa.png') center/cover no-repeat; padding: 28px 80px; text-align: center; }
+    .parte-tag { font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 6px; }
+    .parte-titulo { font-size: 32px; font-weight: 800; color: #fff; }
+
+    /* SEÇÃO GENÉRICA */
+    .secao { padding: 64px 80px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .secao-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #d11550; text-transform: uppercase; margin-bottom: 14px; }
+    .secao-title { font-family: 'Playfair Display', Georgia, serif; font-size: 40px; font-weight: 800; color: #fff; margin-bottom: 40px; line-height: 1.15; }
+
+    /* CARDS EM GRID */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .card { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 28px 24px; transition: border-color 0.2s, transform 0.2s; }
+    .card:hover { border-color: rgba(209,21,80,0.3); transform: translateY(-3px); }
+    .card-icon { font-size: 32px; margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .card-desc { font-size: 14px; color: rgba(255,255,255,0.42); line-height: 1.7; }
+
+    /* STATEMENTS (frases grandes) */
+    .statements { display: flex; flex-direction: column; gap: 0; }
+    .statement { display: flex; align-items: center; gap: 24px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .statement:last-child { border-bottom: none; }
+    .statement-arrow { color: #d11550; font-size: 22px; flex-shrink: 0; }
+    .statement-text { font-size: clamp(22px, 3vw, 36px); font-weight: 800; color: #fff; line-height: 1.1; }
+    .statement-text.muted { color: rgba(255,255,255,0.25); font-weight: 500; font-size: clamp(18px, 2.2vw, 28px); }
+    .statement-text em { color: #d11550; font-style: normal; }
+
+    /* DOIS BLOCOS LADO A LADO */
+    .dois-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .bloco { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 32px 28px; }
+    .bloco-titulo { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #d11550; margin-bottom: 16px; }
+    .bloco-lista { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .bloco-lista li { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.5; display: flex; align-items: flex-start; gap: 10px; }
+    .bloco-lista li::before { content: '→'; color: #d11550; flex-shrink: 0; margin-top: 1px; }
+
+    /* EQUIPAMENTOS GRID */
+    .equip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .equip-item { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px 20px; display: flex; align-items: center; gap: 16px; transition: border-color 0.2s; }
+    .equip-item:hover { border-color: rgba(209,21,80,0.3); }
+    .equip-icon { font-size: 28px; flex-shrink: 0; }
+    .equip-nome { font-size: 14px; font-weight: 600; color: #fff; }
+    .equip-detalhe { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+
+    /* MENTALIDADE */
+    .mentalidade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .mentalidade-card { border-radius: 24px; padding: 40px 36px; position: relative; overflow: hidden; }
+    .mentalidade-card.escuro { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.07); }
+    .mentalidade-card.rosa { background: #d11550; }
+    .mentalidade-num { font-size: 80px; font-weight: 900; opacity: 0.06; position: absolute; top: 10px; right: 20px; line-height: 1; }
+    .mentalidade-tag { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; color: #d11550; }
+    .mentalidade-card.rosa .mentalidade-tag { color: rgba(255,255,255,0.7); }
+    .mentalidade-nome { font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 800; margin-bottom: 16px; }
+    .mentalidade-itens { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .mentalidade-itens li { font-size: 14px; color: rgba(255,255,255,0.55); display: flex; gap: 8px; }
+    .mentalidade-card.rosa .mentalidade-itens li { color: rgba(255,255,255,0.8); }
+    .mentalidade-itens li::before { content: '—'; color: #d11550; flex-shrink: 0; }
+    .mentalidade-card.rosa .mentalidade-itens li::before { color: rgba(255,255,255,0.5); }
+
+    /* TABELA HORAS */
+    .tabela-horas { width: 100%; border-collapse: collapse; }
+    .tabela-horas th { text-align: left; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 0 20px 16px; }
+    .tabela-horas td { padding: 18px 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .tabela-horas tr:hover td { background: rgba(255,255,255,0.02); }
+    .tabela-horas .horas { font-size: 28px; font-weight: 900; color: #d11550; }
+    .tabela-horas .entrega { font-size: 16px; font-weight: 600; color: #fff; }
+    .tabela-horas .obs { font-size: 13px; color: rgba(255,255,255,0.3); }
+
+    /* REGRAS */
+    .regras-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .regra-card { border-radius: 20px; padding: 28px 24px; text-align: center; }
+    .regra-card.proibido { background: rgba(209,21,80,0.07); border: 1px solid rgba(209,21,80,0.2); }
+    .regra-emoji { font-size: 36px; margin-bottom: 14px; }
+    .regra-texto { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+    /* NARRATIVA */
+    .narrativa { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; overflow: hidden; }
+    .narrativa-parte { padding: 40px 32px; position: relative; }
+    .narrativa-parte:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.07); }
+    .narrativa-parte.destaque { background: #d11550; }
+    .narrativa-num { font-size: 64px; font-weight: 900; opacity: 0.08; position: absolute; bottom: 12px; right: 20px; line-height: 1; }
+    .narrativa-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 12px; }
+    .narrativa-parte.destaque .narrativa-label { color: rgba(255,255,255,0.6); }
+    .narrativa-nome { font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+    .narrativa-desc { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.7; }
+    .narrativa-parte.destaque .narrativa-desc { color: rgba(255,255,255,0.8); }
+
+    /* FONTES — phone mocks */
+    .passo { display: grid; grid-template-columns: 1fr 340px; gap: 80px; align-items: center; padding: 56px 80px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .passo.rev { grid-template-columns: 340px 1fr; }
+    .passo.rev .phone-mock { order: -1; }
+    .passo-num { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #d11550; text-transform: uppercase; margin-bottom: 16px; }
+    .passo-title { font-family: 'Playfair Display', Georgia, serif; font-size: 42px; font-weight: 800; color: #fff; margin-bottom: 20px; line-height: 1.15; }
+    .passo-desc { font-size: 17px; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 480px; }
+    .phone-mock { width: 340px; min-height: 600px; border-radius: 40px; border: 1px solid rgba(209,21,80,0.45); background: rgba(209,21,80,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+    .phone-mock img { width: 100%; height: 100%; object-fit: cover; border-radius: 40px; }
+    .phone-placeholder { text-align: center; color: rgba(209,21,80,0.22); font-size: 13px; line-height: 2.4; }
+
+    /* FONTE PREVIEW */
+    .fonte-preview { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 32px 28px; margin-top: 24px; }
+    .fonte-nome { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d11550; margin-bottom: 12px; }
+    .fonte-uso { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.6; }
+    .fonte-amostra-squeeze { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; color: #fff; margin-bottom: 4px; }
+    .fonte-amostra-deco { font-size: 16px; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
+
+    /* DO/DON'T MUSICA */
+    .musica-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .musica-bloco { border-radius: 20px; padding: 32px 28px; }
+    .musica-bloco.nao { background: rgba(209,21,80,0.06); border: 1px solid rgba(209,21,80,0.2); }
+    .musica-bloco.sim { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .musica-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .musica-icon { font-size: 24px; }
+    .musica-titulo { font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .musica-bloco.nao .musica-titulo { color: #d11550; }
+    .musica-bloco.sim .musica-titulo { color: rgba(255,255,255,0.6); }
+    .musica-lista { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .musica-lista li { font-size: 15px; color: rgba(255,255,255,0.55); display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+    .musica-lista li::before { flex-shrink: 0; margin-top: 1px; }
+    .musica-bloco.nao .musica-lista li::before { content: '✕'; color: #d11550; }
+    .musica-bloco.sim .musica-lista li::before { content: '✓'; color: rgba(255,255,255,0.4); }
+
+    /* FEED CARDS */
+    .feed-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feed-card { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 28px 24px; }
+    .feed-card-icon { font-size: 30px; margin-bottom: 14px; }
+    .feed-card-titulo { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .feed-card-desc { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+    .feed-regras { display: flex; gap: 16px; margin-top: 24px; }
+    .feed-regra { flex: 1; background: rgba(209,21,80,0.07); border: 1px solid rgba(209,21,80,0.2); border-radius: 14px; padding: 18px 20px; font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+    .feed-regra strong { color: #d11550; display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+
+    /* TIP */
+    .tip { background: rgba(209,21,80,0.07); border: 1px solid rgba(209,21,80,0.2); border-radius: 10px; padding: 12px 14px; margin-top: 16px; }
+    .tip-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: #d11550; text-transform: uppercase; margin-bottom: 3px; }
+    .tip-text { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.6; }
+
+    /* FOOTER */
+    .footer-cta { padding: 64px 80px; }
+    .concluir { display: inline-flex; align-items: center; gap: 8px; padding: 15px 40px; background: #d11550; border-radius: 30px; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .concluir:hover { background: #e8185a; transform: translateY(-2px); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding: 40px 20px; }
+      .hero-img { display: none; }
+      .secao { padding: 40px 20px; }
+      .card-grid, .dois-col, .mentalidade-grid, .narrativa, .equip-grid, .regras-grid, .musica-grid, .feed-grid { grid-template-columns: 1fr; }
+      .narrativa-parte:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .passo, .passo.rev { grid-template-columns: 1fr; padding: 40px 20px; }
+      .passo.rev .phone-mock { order: 0; }
+      .phone-mock { width: 100%; min-height: 320px; }
+      .parte-banner { padding: 28px 20px; }
+      .tabela-horas { font-size: 14px; }
+      .footer-cta { padding: 40px 20px; }
+      .topbar { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <a href="index.html" class="logo">LINK<span>SY</span></a>
+    <a href="dashboard.html" class="back">← Voltar às trilhas</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <span class="hero-modulo">Módulo 2 — Storymaker</span>
+      <h1 class="hero-titulo">Storymaker<span>do zero</span></h1>
+      <p class="hero-desc">Tudo que você precisa saber para cobrir eventos com profissionalismo, narrativa e padrão Linksy.</p>
+      <div class="hero-badge">&#9654; Treinamento completo</div>
+    </div>
+    <div class="hero-right">
+      <img class="hero-img" src="cage.png" alt="Cage">
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- CENÁRIO 1: O QUE É SER STORYMAKER -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 1</div>
+      <div class="parte-titulo">O que é ser Storymaker</div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 1</div>
+      <div class="secao-title">O que define um Storymaker de verdade</div>
+      <div class="statements">
+        <div class="statement">
+          <span class="statement-arrow">→</span>
+          <span class="statement-text muted">Não é postar por postar.</span>
+        </div>
+        <div class="statement">
+          <span class="statement-arrow">→</span>
+          <span class="statement-text muted">Não é cumprir meta de story.</span>
+        </div>
+        <div class="statement">
+          <span class="statement-arrow">→</span>
+          <span class="statement-text">É <em>construir percepção.</em></span>
+        </div>
+        <div class="statement">
+          <span class="statement-arrow">→</span>
+          <span class="statement-text">É <em>gerar autoridade.</em></span>
+        </div>
+        <div class="statement">
+          <span class="statement-arrow">→</span>
+          <span class="statement-text">É <em>elevar valor.</em></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 2</div>
+      <div class="secao-title">Postura em evento</div>
+      <div class="mentalidade-grid">
+        <div class="mentalidade-card escuro">
+          <div class="mentalidade-num">01</div>
+          <div class="mentalidade-tag">Identidade</div>
+          <div class="mentalidade-nome">Você é equipe.<br>Não é convidado.</div>
+          <ul class="mentalidade-itens">
+            <li>Dress code sempre preto</li>
+            <li>Visual discreto, sem estampas chamativas</li>
+            <li>Aparência organizada e profissional</li>
+            <li>Evitar fones de ouvido de arco</li>
+          </ul>
+        </div>
+        <div class="mentalidade-card rosa">
+          <div class="mentalidade-num">02</div>
+          <div class="mentalidade-tag">Comportamento</div>
+          <div class="mentalidade-nome">Você é o expert.<br>O cliente espera isso.</div>
+          <ul class="mentalidade-itens">
+            <li>Chegar 30 minutos antes</li>
+            <li>Nunca atrasar</li>
+            <li>Sem risadinhas ou brincadeiras</li>
+            <li>Estar sempre atento aos momentos importantes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 3</div>
+      <div class="secao-title">Mentalidade na hora de gravar</div>
+      <div class="dois-col">
+        <div class="bloco">
+          <div class="bloco-titulo">Editor Estratégico</div>
+          <ul class="bloco-lista">
+            <li>Antes de gravar: pensa no que vai usar</li>
+            <li>Antes de postar: pensa no que vai comunicar</li>
+            <li>Antes de escrever: pensa no que vai gerar valor</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="bloco-titulo">Pensar como público</div>
+          <ul class="bloco-lista">
+            <li>O que quem está assistindo quer ver?</li>
+            <li>Isso gera identificação ou autoridade?</li>
+            <li>Esse take faz sentido na narrativa?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENÁRIO 2: ANTES DO EVENTO -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 2</div>
+      <div class="parte-titulo">Antes do evento</div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 1</div>
+      <div class="secao-title">O que levar pro evento</div>
+      <div class="equip-grid">
+        <div class="equip-item">
+          <div class="equip-icon">📱</div>
+          <div>
+            <div class="equip-nome">Celular</div>
+            <div class="equip-detalhe">100% carregado</div>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-icon">🔋</div>
+          <div>
+            <div class="equip-nome">Powerbank</div>
+            <div class="equip-detalhe">100% carregado</div>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-icon">🔌</div>
+          <div>
+            <div class="equip-nome">Carregador</div>
+            <div class="equip-detalhe">Sempre na bolsa</div>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-icon">🎧</div>
+          <div>
+            <div class="equip-nome">Fones de ouvido</div>
+            <div class="equip-detalhe">Para monitorar áudio</div>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-icon">🎙️</div>
+          <div>
+            <div class="equip-nome">Microfone lapela</div>
+            <div class="equip-detalhe">Para falas do cliente</div>
+          </div>
+        </div>
+        <div class="equip-item">
+          <div class="equip-icon">📷</div>
+          <div>
+            <div class="equip-nome">Cage</div>
+            <div class="equip-detalhe">Quando necessário</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 2</div>
+      <div class="secao-title">Checklist de preparação</div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🔑</div>
+          <div class="card-title">Confirmar login</div>
+          <div class="card-desc">Solicitar acesso à conta do cliente antes de chegar ao evento.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🕐</div>
+          <div class="card-title">Confirmar horário e local</div>
+          <div class="card-desc">Saber onde e quando é o evento com antecedência.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title">Pesquisar o cliente</div>
+          <div class="card-desc">Entender o posicionamento, o tema e o objetivo do evento.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">💡</div>
+          <div class="card-title">Pensar em copys e ideias</div>
+          <div class="card-desc">Já chegar com referências e frases na cabeça.</div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:32px">
+        <div class="tip-label">Eventos acima de 4 horas</div>
+        <div class="tip-text">Você + líder devem fazer reunião com o cliente: quais momentos não podem faltar, o que não deve aparecer, e qual estilo musical combina com o posicionamento.</div>
+      </div>
+    </div>
+
+    <!-- CENÁRIO 3: O QUE GRAVAR -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 3</div>
+      <div class="parte-titulo">No evento: o que gravar</div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 1</div>
+      <div class="secao-title">O que precisa ser gravado</div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🎤</div>
+          <div class="card-title">Palestra do cliente</div>
+          <div class="card-desc">Trechos estratégicos — não precisa gravar tudo, só os momentos de impacto.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏛️</div>
+          <div class="card-title">Detalhes do ambiente</div>
+          <div class="card-desc">Mesa, decoração, palco, iluminação — tudo que mostra a qualidade do evento.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚪</div>
+          <div class="card-title">Fachada do local</div>
+          <div class="card-desc">A entrada ou fachada do evento, para contextualizar o story.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤝</div>
+          <div class="card-title">Cliente em networking</div>
+          <div class="card-desc">Momentos de conexão, interação com alunos ou convidados.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">👏</div>
+          <div class="card-title">Reação do público</div>
+          <div class="card-desc">Aplausos, anotações, expressões — prova social e autoridade.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📸</div>
+          <div class="card-title">Bastidores</div>
+          <div class="card-desc">Fotógrafo trabalhando, equipe nos bastidores, preparação.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 2</div>
+      <div class="secao-title">Direcionamento do cliente</div>
+      <div class="dois-col">
+        <div class="bloco">
+          <div class="bloco-titulo">Faça isso</div>
+          <ul class="bloco-lista">
+            <li>Conduza o cliente com segurança e clareza</li>
+            <li>Indique posição, local e ângulo antes de gravar</li>
+            <li>Leve para fundos limpos e com boa iluminação</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="bloco-titulo">Evite isso</div>
+          <ul class="bloco-lista">
+            <li>Demonstrar insegurança na condução</li>
+            <li>Gravar em fundos feios ou bagunçados</li>
+            <li>Improvisar sem pensar no resultado final</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENÁRIO 4: PLANEJAMENTO -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 4</div>
+      <div class="parte-titulo">Planejamento de stories</div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 1</div>
+      <div class="secao-title">Cargas horárias e entregas</div>
+      <table class="tabela-horas">
+        <thead>
+          <tr>
+            <th>Duração</th>
+            <th>Stories</th>
+            <th>Feed</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="horas">1h</span></td>
+            <td><span class="entrega">4 stories</span></td>
+            <td><span class="entrega">1 feed</span></td>
+            <td><span class="obs">Cobertura básica</span></td>
+          </tr>
+          <tr>
+            <td><span class="horas">2h</span></td>
+            <td><span class="entrega">6 stories</span></td>
+            <td><span class="entrega">1 feed</span></td>
+            <td><span class="obs">Narrativa completa</span></td>
+          </tr>
+          <tr>
+            <td><span class="horas">3h+</span></td>
+            <td><span class="entrega">8 stories</span></td>
+            <td><span class="entrega">1 feed</span></td>
+            <td><span class="obs">Cobertura aprofundada</span></td>
+          </tr>
+          <tr>
+            <td><span class="horas">5h</span></td>
+            <td><span class="entrega">8 stories</span></td>
+            <td><span class="entrega">2 feeds</span></td>
+            <td><span class="obs">Mais momentos, mais entregas</span></td>
+          </tr>
+          <tr>
+            <td><span class="horas">6h+</span></td>
+            <td><span class="entrega">8+ stories</span></td>
+            <td><span class="entrega">3 feeds</span></td>
+            <td><span class="obs">+1 story por hora extra</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 2</div>
+      <div class="secao-title">Regras de distribuição</div>
+      <div class="regras-grid">
+        <div class="regra-card proibido">
+          <div class="regra-emoji">🚫</div>
+          <div class="regra-texto">Não postar tudo no início do evento</div>
+        </div>
+        <div class="regra-card proibido">
+          <div class="regra-emoji">👻</div>
+          <div class="regra-texto">Não sumir no meio — distribua ao longo do evento</div>
+        </div>
+        <div class="regra-card proibido">
+          <div class="regra-emoji">⛔</div>
+          <div class="regra-texto">Não ultrapassar o que foi contratado</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 3</div>
+      <div class="secao-title">A narrativa do evento</div>
+      <div class="narrativa">
+        <div class="narrativa-parte">
+          <div class="narrativa-num">1</div>
+          <div class="narrativa-label">Início</div>
+          <div class="narrativa-nome">Abertura</div>
+          <div class="narrativa-desc">Apresentação do evento. Ambiente, fachada, cliente chegando. Contextualiza quem está assistindo.</div>
+        </div>
+        <div class="narrativa-parte destaque">
+          <div class="narrativa-num">2</div>
+          <div class="narrativa-label">Meio</div>
+          <div class="narrativa-nome">O momento</div>
+          <div class="narrativa-desc">Os momentos mais importantes acontecendo. Fala do cliente, reação do público, interações fortes.</div>
+        </div>
+        <div class="narrativa-parte">
+          <div class="narrativa-num">3</div>
+          <div class="narrativa-label">Fim</div>
+          <div class="narrativa-nome">Encerramento</div>
+          <div class="narrativa-desc">Fechamento do evento. Agradecimento, público reagindo, sensação de conclusão.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENÁRIO 5: FONTES -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 5</div>
+      <div class="parte-titulo">Como escrever nos stories</div>
+    </div>
+
+    <div class="passo">
+      <div>
+        <div class="passo-num">Passo 1</div>
+        <div class="passo-title">Combinação de fontes padrão Linksy</div>
+        <div class="passo-desc">O padrão usa duas fontes combinadas nos stories. Cada uma tem uma função específica.</div>
+        <div class="fonte-preview" style="margin-top:24px">
+          <div class="fonte-nome">SQUEEZE — Frase de destaque</div>
+          <div class="fonte-amostra-squeeze">Não basta saber.</div>
+          <div class="fonte-uso">Usada para a frase principal, em caixa alta, com impacto visual.</div>
+        </div>
+        <div class="fonte-preview" style="margin-top:12px">
+          <div class="fonte-nome">DECO — Corpo da frase</div>
+          <div class="fonte-amostra-deco">Tem que parecer ser.</div>
+          <div class="fonte-uso">Usada para complementar a frase principal. Pode usar sozinha com sombra.</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>print do<br>slide aqui</div>
+      </div>
+    </div>
+
+    <div class="passo rev">
+      <div>
+        <div class="passo-num">Passo 2</div>
+        <div class="passo-title">Literature para falas do cliente</div>
+        <div class="passo-desc">Quando o cliente palestra ou fala algo, a legenda no Captions deve usar a fonte padrão <strong style="color:#fff">Montserrat</strong> ou <strong style="color:#fff">Poppins</strong>.</div>
+        <div class="fonte-preview" style="margin-top:24px">
+          <div class="fonte-nome">LITERATURE EM CAIXA BRANCA</div>
+          <div class="fonte-uso">Usada apenas durante falas na palestra, logo abaixo da legenda do Captions. Não usar em nenhum outro contexto.</div>
+        </div>
+        <div class="tip" style="margin-top:16px">
+          <div class="tip-label">Atenção</div>
+          <div class="tip-text">Não usar nenhuma outra fonte além das definidas no padrão Linksy. Sigam o padrão sempre.</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>print do<br>slide aqui</div>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div>
+        <div class="passo-num">Passo 3</div>
+        <div class="passo-title">O que mais pode usar nos stories</div>
+        <div class="passo-desc">Além das fontes, alguns elementos extras são permitidos — mas só esses.</div>
+        <div class="card-grid" style="margin-top:24px; grid-template-columns: 1fr 1fr;">
+          <div class="card">
+            <div class="card-icon">😮</div>
+            <div class="card-title">Figurinha de reação</div>
+            <div class="card-desc">Para reforçar emoção no story.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔗</div>
+            <div class="card-title">Figurinha de link</div>
+            <div class="card-desc">Quando houver necessidade de direcionar.</div>
+          </div>
+          <div class="card" style="grid-column: 1 / -1;">
+            <div class="card-icon">❓</div>
+            <div class="card-title">Enquete de perguntas</div>
+            <div class="card-desc">Sempre escrever a pergunta manualmente. Nunca usar a opção de escrever direto no adesivo.</div>
+          </div>
+        </div>
+        <div class="tip" style="margin-top:16px">
+          <div class="tip-label">Regra geral</div>
+          <div class="tip-text">Fora o que foi descrito acima, não usar mais nada nos stories.</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>print do<br>slide aqui</div>
+      </div>
+    </div>
+
+    <!-- CENÁRIO 6: MÚSICA -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 6</div>
+      <div class="parte-titulo">Música</div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 1 — O que evitar e o que fazer</div>
+      <div class="secao-title">Escolha musical</div>
+      <div class="musica-grid">
+        <div class="musica-bloco nao">
+          <div class="musica-header">
+            <span class="musica-icon">⚠️</span>
+            <span class="musica-titulo">Cuidado com</span>
+          </div>
+          <ul class="musica-lista">
+            <li>Letra em inglês que você não conhece</li>
+            <li>Duplo sentido</li>
+            <li>Vulgaridade</li>
+            <li>Incoerência com o posicionamento do cliente</li>
+          </ul>
+        </div>
+        <div class="musica-bloco sim">
+          <div class="musica-header">
+            <span class="musica-icon">🎵</span>
+            <span class="musica-titulo">Faça isso</span>
+          </div>
+          <ul class="musica-lista">
+            <li>Se a música for legal, use a versão instrumental</li>
+            <li>Caso não tenha instrumental, troque de música</li>
+            <li>Priorize músicas que combinem com o cliente</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENÁRIO 7: FEED -->
+    <div class="parte-banner">
+      <div class="parte-tag">Cenário 7</div>
+      <div class="parte-titulo">O feed</div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-label">Passo 1 — O que postar e as regras</div>
+      <div class="secao-title">O que postar no feed</div>
+      <div class="feed-grid">
+        <div class="feed-card">
+          <div class="feed-card-icon">💬</div>
+          <div class="feed-card-titulo">Uma fala impactante</div>
+          <div class="feed-card-desc">Trecho do cliente com força, autoridade e mensagem clara.</div>
+        </div>
+        <div class="feed-card">
+          <div class="feed-card-icon">🔥</div>
+          <div class="feed-card-titulo">Momentos fortes do evento</div>
+          <div class="feed-card-desc">Os melhores takes do evento editados com qualidade.</div>
+        </div>
+        <div class="feed-card">
+          <div class="feed-card-icon">👑</div>
+          <div class="feed-card-titulo">Demonstrar autoridade</div>
+          <div class="feed-card-desc">O feed deve posicionar o cliente como referência no que faz.</div>
+        </div>
+      </div>
+      <div class="feed-regras">
+        <div class="feed-regra">
+          <strong>✓ Permitido</strong>
+          Pode usar o mesmo corte de fala dos stories no feed.
+        </div>
+        <div class="feed-regra">
+          <strong>📅 Prazo</strong>
+          O feed deve ser postado no mesmo dia do evento.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <div class="footer-cta">
+    <button class="concluir" id="btnConcluir">✓ Marcar aula como concluída</button>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://wvtfwlulcfklbojrdaep.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2dGZ3bHVsY2ZrbGJvanJkYWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyMTk0NzksImV4cCI6MjA2MTc5NTQ3OX0.n64kqHPdJj61Bi0_hMl3RAE4sGVqxJ5dmFlxFcJCi_c';
+
+    document.getElementById('btnConcluir').addEventListener('click', async () => {
+      const userId = localStorage.getItem('linksy_user_id');
+      if (!userId) return;
+      await fetch(`${SUPABASE_URL}/rest/v1/progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({ user_id: userId, lesson_id: 'c1', completed: true })
+      });
+      window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>
