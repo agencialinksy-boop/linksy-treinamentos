@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legendagem do Zero — Linksy Treinamentos</title>
+  <style>
+    @keyframes blob1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(80px,-60px) scale(1.1)} 66%{transform:translate(-40px,80px) scale(0.9)} }
+    @keyframes blob2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-70px,50px) scale(1.15)} 66%{transform:translate(60px,-70px) scale(0.85)} }
+    @keyframes blob3 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(50px,70px) scale(0.9)} 66%{transform:translate(-80px,-40px) scale(1.1)} }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #080808; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; }
+
+    .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(90px); z-index: 0; }
+    .blob1 { width: 600px; height: 600px; background: rgba(209,21,80,0.18); bottom: -150px; left: -150px; animation: blob1 12s ease-in-out infinite; }
+    .blob2 { width: 500px; height: 500px; background: rgba(209,21,80,0.13); top: 50px; right: -100px; animation: blob2 15s ease-in-out infinite; }
+    .blob3 { width: 350px; height: 350px; background: rgba(209,21,80,0.1); top: 45%; left: 35%; animation: blob3 10s ease-in-out infinite; }
+
+    .topbar { background: rgba(8,8,8,0.88); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 48px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #fff; text-decoration: none; }
+    .logo span { color: #d11550; }
+    .back { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
+    .back:hover { color: #fff; }
+
+    .hero { min-height: 320px; padding: 60px 48px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; }
+    .modulo-tag { font-size: 10px; letter-spacing: 4px; color: #d11550; text-transform: uppercase; margin-bottom: 14px; }
+    .aula-title { font-size: 52px; font-weight: 800; line-height: 1.05; margin-bottom: 20px; letter-spacing: -1px; }
+    .aula-intro { font-size: 15px; color: rgba(255,255,255,0.38); line-height: 1.75; max-width: 480px; margin-bottom: 24px; }
+    .hero-app-label { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .hero-app-label strong { color: #d11550; }
+    .app-logo-big { width: 160px; height: 160px; border-radius: 36px; border: 1px solid rgba(209,21,80,0.35); background: rgba(209,21,80,0.06); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; flex-shrink: 0; }
+    .app-logo-big img { width: 100px; height: 100px; object-fit: contain; position: relative; z-index: 1; }
+    .app-logo-glow { position: absolute; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(209,21,80,0.2) 0%, transparent 70%); animation: blob1 8s ease-in-out infinite; }
+
+    .body { padding: 56px 48px 80px; position: relative; z-index: 1; max-width: 1100px; }
+    .parte-header { margin-bottom: 36px; }
+    .parte-tag { font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.2); text-transform: uppercase; margin-bottom: 6px; }
+    .parte-titulo { font-size: 22px; font-weight: 700; }
+
+    .step-row { display: grid; grid-template-columns: 1fr 260px; gap: 48px; align-items: start; margin-bottom: 56px; }
+    .step-row.rev { grid-template-columns: 260px 1fr; }
+    .step-row.rev .phone-mock { order: -1; }
+
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item { display: flex; gap: 16px; position: relative; }
+    .tl-item:not(:last-child)::after { content: ''; position: absolute; left: 12px; top: 26px; width: 1px; height: calc(100% - 10px); background: rgba(209,21,80,0.25); }
+    .tl-dot { width: 26px; height: 26px; border-radius: 50%; background: rgba(209,21,80,0.12); border: 1px solid rgba(209,21,80,0.4); color: #d11550; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; position: relative; z-index: 1; }
+    .tl-content { padding-bottom: 28px; flex: 1; }
+    .tl-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .tl-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+
+    .tip { background: rgba(209,21,80,0.07); border: 1px solid rgba(209,21,80,0.2); border-radius: 10px; padding: 12px 14px; margin-top: 10px; }
+    .tip-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: #d11550; text-transform: uppercase; margin-bottom: 3px; }
+    .tip-text { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.6; }
+
+    .phone-mock { width: 260px; min-height: 460px; border-radius: 32px; border: 1px solid rgba(209,21,80,0.45); background: rgba(209,21,80,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+    .phone-mock img { width: 100%; height: 100%; object-fit: cover; border-radius: 32px; }
+    .phone-placeholder { text-align: center; color: rgba(209,21,80,0.25); font-size: 12px; line-height: 2; }
+
+    .divider { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0 0 56px; }
+
+    .concluir { display: inline-flex; align-items: center; gap: 8px; padding: 15px 40px; background: #d11550; border-radius: 30px; color: #ffffff; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .concluir:hover { background: #e8185a; transform: translateY(-2px); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .app-logo-big { display: none; }
+      .step-row, .step-row.rev { grid-template-columns: 1fr; }
+      .step-row.rev .phone-mock { order: 0; }
+      .phone-mock { width: 100%; min-height: 320px; }
+      .body { padding: 40px 20px 60px; }
+      .topbar { padding: 0 20px; }
+      .hero { padding: 40px 20px; }
+      .aula-title { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <nav class="topbar">
+    <a href="index.html" class="logo">LINK<span>SY</span></a>
+    <a href="dashboard.html" class="back">← Voltar às trilhas</a>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <div class="modulo-tag">Módulo 1 — Edição Básica</div>
+      <div class="aula-title">Legendagem<br>do Zero</div>
+      <div class="aula-intro">Configure a legenda padrão da Linksy no Captions do zero. Cada ajuste garante que todas as legendas do time fiquem no mesmo padrão de qualidade.</div>
+      <div class="hero-app-label">Ferramenta utilizada nesta aula: <strong>Captions</strong></div>
+    </div>
+    <div class="app-logo-big">
+      <div class="app-logo-glow"></div>
+      <img src="captionslogo.png" alt="Captions">
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- PARTE 1 -->
+    <div class="parte-header">
+      <div class="parte-tag">Parte 1</div>
+      <div class="parte-titulo">Configurando a legenda padrão</div>
+    </div>
+
+    <div class="step-row">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">1</div>
+          <div class="tl-content">
+            <div class="tl-title">Importe o vídeo no Captions</div>
+            <div class="tl-desc">Abra o Captions e importe o vídeo. O app vai gerar uma legenda automática — ainda não está no padrão, mas vamos ajustar.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">2</div>
+          <div class="tl-content">
+            <div class="tl-title">Estilo → Todos → Mínima</div>
+            <div class="tl-desc">Toque em "Estilo", depois "Todos" e selecione "Mínima". Ainda não aplique.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">3</div>
+          <div class="tl-content">
+            <div class="tl-title">Clique no lápis ao lado</div>
+            <div class="tl-desc">Com "Mínima" selecionada, toque no ícone de lápis. Ele abre todas as configurações de estilo da legenda.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">4</div>
+          <div class="tl-content">
+            <div class="tl-title">Sombra → Opacidade 100%</div>
+            <div class="tl-desc">Vá em Cor → Sombra → toque na bolinha colorida. No seletor de cores que abrir, puxe a opacidade até o final — 100%.</div>
+            <div class="tip">
+              <div class="tip-label">Por que?</div>
+              <div class="tip-text">Com opacidade em 100% a sombra fica totalmente aplicada, deixando a legenda no padrão correto da Linksy.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">print<br>do<br>celular<br>aqui</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PARTE 2 -->
+    <div class="parte-header">
+      <div class="parte-tag">Parte 2</div>
+      <div class="parte-titulo">Fonte e capitalização</div>
+    </div>
+
+    <div class="step-row rev">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">5</div>
+          <div class="tl-content">
+            <div class="tl-title">Fonte → Capitalização → Nenhum</div>
+            <div class="tl-desc">Vá em "Fonte" → desça até "Capitalização" → ative "Nenhum". A legenda passa a respeitar maiúsculas e minúsculas com ortografia correta.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">6</div>
+          <div class="tl-content">
+            <div class="tl-title">Enfatizar → desativar</div>
+            <div class="tl-desc">Localize "Enfatizar" nas configurações e desative a opção.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">7</div>
+          <div class="tl-content">
+            <div class="tl-title">Pausas → Quebras de linha</div>
+            <div class="tl-desc">Vá em "Pausas" → ative "Quebras de linha" → selecione "Pontuação ou página". Em Quebras de página → "Apenas um".</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">print<br>do<br>celular<br>aqui</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PARTE 3 -->
+    <div class="parte-header">
+      <div class="parte-tag">Parte 3</div>
+      <div class="parte-titulo">Salvando o modelo por cliente</div>
+    </div>
+
+    <div class="step-row">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">8</div>
+          <div class="tl-content">
+            <div class="tl-title">Estilo → Personalizado → Salvar</div>
+            <div class="tl-desc">Volte em Estilo → Personalizado → salve o modelo. Nomeie como "Legenda Padrão". Essa serve para qualquer cliente.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">9</div>
+          <div class="tl-content">
+            <div class="tl-title">Novo cliente: só mude a fonte</div>
+            <div class="tl-desc">Aplique a Legenda Padrão → vá em Fonte → mude apenas a fonte → salve como "Legenda [Nome do cliente]".</div>
+            <div class="tip">
+              <div class="tip-label">Exemplo</div>
+              <div class="tip-text">Legenda Mônica, Legenda João — cada cliente tem a sua salva e pronta para usar a qualquer momento.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">print<br>do<br>celular<br>aqui</div>
+      </div>
+    </div>
+
+    <button class="concluir" onclick="marcarConcluida()">Marcar como concluída</button>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://jkkaaaiatsnascsgyecb.supabase.co',
+      'sb_publishable_jDzb_17E7ns76zgiRC1z7w_P0bumCgy'
+    );
+
+    async function marcarConcluida() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+      const btn = document.querySelector('.concluir');
+      await sb.from('user_progress').upsert({ user_id: session.user.id, lesson_id: 'b1', completed_at: new Date().toISOString() });
+      btn.textContent = '✓ Concluída!';
+      btn.style.background = '#16a34a';
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+    }
+  </script>
+</body>
+</html>
