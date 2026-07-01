@@ -679,12 +679,14 @@
         }
         lessonNum++;
         const done = completedLessons.has(l.id);
-        html += `<div class="lesson ${done ? 'completed' : ''}" data-id="${l.id}" onclick="toggleLesson('${l.id}', '${track.id}')">
+        const lessonPages = { b1: 'aula-legendagem.html' };
+        const hasPage = lessonPages[l.id];
+        html += `<div class="lesson ${done ? 'completed' : ''}" data-id="${l.id}" onclick="${hasPage ? `window.location.href='${lessonPages[l.id]}'` : `toggleLesson('${l.id}', '${track.id}')`}">
           <span class="lesson-num">${String(lessonNum).padStart(2, '0')}</span>
           <div class="check ${done ? 'done' : ''}" style="${done ? 'background:' + track.color + ';border-color:' + track.color : ''}">
             ${done ? '✓' : ''}
           </div>
-          <span class="lesson-title">${l.title}</span>
+          <span class="lesson-title">${l.title}${hasPage ? ' <span style="font-size:10px;color:' + track.color + ';margin-left:6px;">VER AULA →</span>' : ''}</span>
         </div>`;
       });
       document.getElementById('modal-lessons').innerHTML = html;
