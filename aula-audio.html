@@ -43,10 +43,11 @@
 
     .body { padding: 0 0 100px; position: relative; z-index: 1; }
 
-    .parte-header { padding: 64px 80px 0; margin-bottom: 8px; }
-    .parte-tag { font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.2); text-transform: uppercase; margin-bottom: 8px; }
-    .parte-titulo { font-size: 26px; font-weight: 700; padding-bottom: 16px; }
-    .parte-subtitulo { font-size: 14px; color: rgba(255,255,255,0.35); line-height: 1.7; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .parte-header { padding: 0; margin-bottom: 0; }
+    .parte-banner { background: linear-gradient(90deg, #d11550 0%, #ff6b9d 50%, #fff 100%); padding: 28px 80px; text-align: center; }
+    .parte-tag { font-size: 10px; letter-spacing: 3px; color: rgba(0,0,0,0.5); text-transform: uppercase; margin-bottom: 6px; }
+    .parte-titulo { font-size: 32px; font-weight: 800; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.18); }
+    .parte-subtitulo { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; padding: 20px 80px 28px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
     .lembrete { margin: 0 80px; padding: 14px 20px; background: rgba(209,21,80,0.07); border: 1px solid rgba(209,21,80,0.2); border-radius: 12px; font-size: 13px; color: rgba(255,255,255,0.45); display: flex; align-items: center; gap: 10px; }
     .lembrete strong { color: #d11550; }
@@ -125,8 +126,10 @@
 
     <!-- CENÁRIO 1 -->
     <div class="parte-header">
-      <div class="parte-tag">Cenário 1</div>
-      <div class="parte-titulo">Áudio já está bom</div>
+      <div class="parte-banner">
+        <div class="parte-tag">Cenário 1</div>
+        <div class="parte-titulo">Áudio já está bom</div>
+      </div>
       <div class="parte-subtitulo">O cliente gravou bem, mas dá pra dar uma melhorada na qualidade. Só dois passos.</div>
     </div>
 
@@ -156,8 +159,10 @@
 
     <!-- CENÁRIO 2 -->
     <div class="parte-header">
-      <div class="parte-tag">Cenário 2</div>
-      <div class="parte-titulo">Áudio com muito ruído de fundo</div>
+      <div class="parte-banner">
+        <div class="parte-tag">Cenário 2</div>
+        <div class="parte-titulo">Áudio com muito ruído de fundo</div>
+      </div>
       <div class="parte-subtitulo">Barulho de rua, ventilador, ambiente cheio. Use isolamento de voz. Lembre de extrair o áudio primeiro.</div>
     </div>
 
@@ -195,8 +200,10 @@
 
     <!-- CENÁRIO 3 -->
     <div class="parte-header">
-      <div class="parte-tag">Cenário 3</div>
-      <div class="parte-titulo">Voz baixa ou com falhas</div>
+      <div class="parte-banner">
+        <div class="parte-tag">Cenário 3</div>
+        <div class="parte-titulo">Voz baixa ou com falhas</div>
+      </div>
       <div class="parte-subtitulo">Microfone ruim, voz arrastando, volume baixo. Use aprimorar voz. Lembre de extrair o áudio primeiro.</div>
     </div>
 
