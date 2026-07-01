@@ -31,16 +31,15 @@
 
     .hero { min-height: 100vh; padding: 60px 60px 60px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
     .modulo-tag { font-size: 11px; letter-spacing: 5px; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 16px; }
-    .aula-title { font-size: clamp(90px, 14vw, 200px); font-weight: 900; line-height: 0.88; letter-spacing: -4px; color: #d11550; text-transform: uppercase; position: relative; z-index: 1; }
+    .aula-title { font-size: clamp(80px, 11vw, 160px); font-weight: 900; line-height: 0.88; letter-spacing: -3px; color: #d11550; text-transform: uppercase; position: relative; z-index: 1; filter: url(#grain); }
     .aula-intro { font-size: 17px; color: rgba(255,255,255,0.38); line-height: 1.8; max-width: 480px; margin-top: 36px; }
     .hero-app-label { font-size: 13px; color: rgba(255,255,255,0.25); margin-top: 20px; }
     .hero-app-label strong { color: #d11550; }
 
     .hero-logo-wrap { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; display: flex; flex-direction: column; align-items: center; }
     .app-logo-big { animation: pulo 2.4s cubic-bezier(0.36,0.07,0.19,0.97) infinite; }
-    .app-logo-inner { width: 320px; height: 320px; border-radius: 64px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 40px 100px rgba(209,21,80,0.5), 0 10px 30px rgba(0,0,0,0.6); }
-    .app-logo-inner img { width: 290px; height: 290px; object-fit: contain; }
-    .app-logo-shadow { width: 200px; height: 20px; border-radius: 50%; background: rgba(209,21,80,0.4); filter: blur(14px); margin-top: 10px; animation: sombra 2.4s cubic-bezier(0.36,0.07,0.19,0.97) infinite; }
+    .app-logo-big img { width: 300px; height: 300px; object-fit: contain; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(209,21,80,0.3)); }
+    .app-logo-shadow { width: 180px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.5); filter: blur(14px); margin-top: 4px; animation: sombra 2.4s cubic-bezier(0.36,0.07,0.19,0.97) infinite; }
 
     .body { padding: 0 0 100px; position: relative; z-index: 1; }
 
@@ -101,18 +100,25 @@
 
   <div class="hero">
     <div class="modulo-tag">Módulo 1 — Edição Básica</div>
-    <div class="aula-title">Checklist de<br>Qualidade<br>de Áudio</div>
+    <div class="aula-title">Qualidade<br>de Áudio</div>
     <div class="aula-intro">Saiba exatamente o que fazer com o áudio do cliente dependendo da situação: áudio bom, com ruído ou voz com falhas. Cada cenário tem seu tratamento.</div>
     <div class="hero-app-label">Ferramenta utilizada nesta aula: <strong>CapCut</strong></div>
 
     <div class="hero-logo-wrap">
       <div class="app-logo-big">
-        <div class="app-logo-inner">
-          <img src="logo-capcut.webp" alt="CapCut">
-        </div>
+        <img src="logo-capcut.webp" alt="CapCut">
       </div>
       <div class="app-logo-shadow"></div>
     </div>
+
+    <svg style="display:none">
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+        <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+        <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay" result="blend"/>
+        <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+      </filter>
+    </svg>
   </div>
 
   <div class="body">
