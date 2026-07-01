@@ -26,17 +26,21 @@
     .back { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
     .back:hover { color: #fff; }
 
-    .hero { min-height: 100vh; padding: 80px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; }
-    .modulo-tag { font-size: 11px; letter-spacing: 5px; color: #d11550; text-transform: uppercase; margin-bottom: 18px; }
-    .aula-title { font-size: 64px; font-weight: 800; line-height: 1.0; margin-bottom: 24px; letter-spacing: -2px; }
-    .aula-intro { font-size: 16px; color: rgba(255,255,255,0.38); line-height: 1.8; max-width: 500px; margin-bottom: 28px; }
-    .hero-app-label { font-size: 13px; color: rgba(255,255,255,0.25); }
+    @keyframes pulo { 0%,100%{transform:translateY(0px) scale(1)} 40%{transform:translateY(-28px) scale(1.04)} 60%{transform:translateY(-20px) scale(1.02)} }
+    @keyframes sombra { 0%,100%{transform:scaleX(1); opacity:0.4} 40%{transform:scaleX(0.7); opacity:0.15} }
+
+    .hero { min-height: 100vh; padding: 100px 80px 80px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    .modulo-tag { font-size: 11px; letter-spacing: 5px; color: #d11550; text-transform: uppercase; margin-bottom: 24px; }
+    .aula-title { font-size: clamp(72px, 10vw, 140px); font-weight: 800; line-height: 0.92; letter-spacing: -4px; color: #fff; max-width: 900px; position: relative; z-index: 1; }
+    .aula-intro { font-size: 17px; color: rgba(255,255,255,0.38); line-height: 1.8; max-width: 560px; margin-top: 32px; }
+    .hero-app-label { font-size: 13px; color: rgba(255,255,255,0.25); margin-top: 20px; }
     .hero-app-label strong { color: #d11550; }
-    .hero-right { display: flex; align-items: center; justify-content: center; }
-    .app-logo-big { width: 340px; height: 340px; border-radius: 72px; background: transparent; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; animation: float 6s ease-in-out infinite; }
-    .app-logo-glow { position: absolute; width: 360px; height: 360px; border-radius: 80px; background: rgba(209,21,80,0.35); filter: blur(32px); z-index: 0; }
-    .app-logo-inner { width: 300px; height: 300px; border-radius: 60px; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; overflow: hidden; }
-    .app-logo-inner img { width: 270px; height: 270px; object-fit: contain; }
+
+    .hero-logo-wrap { position: absolute; right: 120px; top: 50%; transform: translateY(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; }
+    .app-logo-big { animation: pulo 2.4s cubic-bezier(0.36,0.07,0.19,0.97) infinite; }
+    .app-logo-inner { width: 280px; height: 280px; border-radius: 56px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 30px 80px rgba(209,21,80,0.45), 0 8px 24px rgba(0,0,0,0.5); }
+    .app-logo-inner img { width: 250px; height: 250px; object-fit: contain; }
+    .app-logo-shadow { width: 180px; height: 18px; border-radius: 50%; background: rgba(209,21,80,0.35); filter: blur(12px); margin-top: 8px; animation: sombra 2.4s cubic-bezier(0.36,0.07,0.19,0.97) infinite; }
 
     .body { padding: 0 0 100px; position: relative; z-index: 1; }
 
@@ -96,19 +100,18 @@
   </nav>
 
   <div class="hero">
-    <div>
-      <div class="modulo-tag">Módulo 1 — Edição Básica</div>
-      <div class="aula-title">Checklist de<br>Qualidade<br>de Áudio</div>
-      <div class="aula-intro">Saiba exatamente o que fazer com o áudio do cliente dependendo da situação: áudio bom, com ruído ou voz com falhas. Cada cenário tem seu tratamento.</div>
-      <div class="hero-app-label">Ferramenta utilizada nesta aula: <strong>CapCut</strong></div>
-    </div>
-    <div class="hero-right">
+    <div class="modulo-tag">Módulo 1 — Edição Básica</div>
+    <div class="aula-title">Checklist de<br>Qualidade<br>de Áudio</div>
+    <div class="aula-intro">Saiba exatamente o que fazer com o áudio do cliente dependendo da situação: áudio bom, com ruído ou voz com falhas. Cada cenário tem seu tratamento.</div>
+    <div class="hero-app-label">Ferramenta utilizada nesta aula: <strong>CapCut</strong></div>
+
+    <div class="hero-logo-wrap">
       <div class="app-logo-big">
-        <div class="app-logo-glow"></div>
         <div class="app-logo-inner">
           <img src="microfonelogo.jpg" alt="CapCut">
         </div>
       </div>
+      <div class="app-logo-shadow"></div>
     </div>
   </div>
 
