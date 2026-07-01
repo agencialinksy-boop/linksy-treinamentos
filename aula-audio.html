@@ -13,12 +13,9 @@
     @keyframes float { 0%,100%{transform:translateY(0px) rotate(-2deg)} 50%{transform:translateY(-18px) rotate(2deg)} }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #080808; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; }
+    body { background: #000; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; }
 
-    .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(90px); z-index: 0; }
-    .blob1 { width: 600px; height: 600px; background: rgba(209,21,80,0.18); bottom: -150px; left: -150px; animation: blob1 12s ease-in-out infinite; }
-    .blob2 { width: 500px; height: 500px; background: rgba(209,21,80,0.13); top: 50px; right: -100px; animation: blob2 15s ease-in-out infinite; }
-    .blob3 { width: 350px; height: 350px; background: rgba(209,21,80,0.1); top: 45%; left: 35%; animation: blob3 10s ease-in-out infinite; }
+    .blob { display: none; }
 
     .topbar { background: rgba(8,8,8,0.88); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 48px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
     .logo { font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #fff; text-decoration: none; }
@@ -26,7 +23,7 @@
     .back { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
     .back:hover { color: #fff; }
 
-    @keyframes float { 0%,100%{transform:translateY(0px) rotate(-3deg)} 50%{transform:translateY(-22px) rotate(3deg)} }
+    @keyframes float { 0%,100%{transform:translateY(0px) rotate(12deg)} 50%{transform:translateY(-18px) rotate(15deg)} }
 
     .hero { min-height: 100vh; padding: 0 80px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; overflow: hidden; }
     .hero-left { position: relative; z-index: 2; }
@@ -36,8 +33,8 @@
     .hero-desc { font-size: 16px; color: rgba(255,255,255,0.4); line-height: 1.8; max-width: 420px; margin-bottom: 40px; }
     .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(209,21,80,0.12); border: 1px solid rgba(209,21,80,0.3); border-radius: 30px; padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #d11550; }
     .hero-right { position: relative; display: flex; align-items: center; justify-content: center; height: 100vh; }
-    .hero-fone { width: clamp(340px, 48vw, 680px); object-fit: contain; animation: float 5s ease-in-out infinite; position: relative; z-index: 2; filter: drop-shadow(0 40px 80px rgba(209,21,80,0.35)); }
-    .hero-glow { position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(209,21,80,0.25) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; }
+    .hero-fone { width: clamp(420px, 58vw, 820px); object-fit: contain; animation: float 5s ease-in-out infinite; position: relative; z-index: 2; transform-origin: center center; filter: drop-shadow(0 40px 80px rgba(0,0,0,0.5)); }
+    .hero-glow { display: none; }
     .hero-app-label { display: none; }
     .hero-logo-wrap { display: none; }
     .modulo-tag { display: none; }
