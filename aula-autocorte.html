@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autocorte — Linksy Treinamentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+    @keyframes float { 0%,100%{transform:translateY(0px) rotate(-3deg)} 50%{transform:translateY(-22px) rotate(3deg)} }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; }
+
+    .topbar { background: rgba(0,0,0,0.88); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 48px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #fff; text-decoration: none; }
+    .logo span { color: #d11550; }
+    .back { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
+    .back:hover { color: #fff; }
+
+    /* HERO */
+    .hero { min-height: 100vh; padding: 0 80px; border-bottom: 1px solid rgba(255,255,255,0.05); display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; overflow: hidden; }
+    .hero-left { position: relative; z-index: 2; }
+    .hero-modulo { font-size: 11px; letter-spacing: 5px; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 28px; display: block; }
+    .hero-titulo { font-size: clamp(48px, 6vw, 88px); font-weight: 900; line-height: 1; letter-spacing: -2px; text-transform: uppercase; color: #fff; margin-bottom: 24px; }
+    .hero-titulo span { color: #d11550; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 700; text-transform: none; display: block; }
+    .hero-desc { font-size: 16px; color: rgba(255,255,255,0.4); line-height: 1.8; max-width: 420px; margin-bottom: 40px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(209,21,80,0.12); border: 1px solid rgba(209,21,80,0.3); border-radius: 30px; padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #d11550; }
+    .hero-right { display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .hero-img { width: clamp(200px, 26vw, 360px); object-fit: contain; animation: float 5s ease-in-out infinite; filter: drop-shadow(0 40px 80px rgba(0,0,0,0.5)); }
+
+    /* CENÁRIO BANNER */
+    .parte-banner { background: url('fundorosa.png') center/cover no-repeat; padding: 28px 80px; text-align: center; }
+    .parte-tag { font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 6px; }
+    .parte-titulo { font-size: 32px; font-weight: 800; color: #fff; }
+
+    /* PASSOS */
+    .passo { display: grid; grid-template-columns: 1fr 340px; gap: 80px; align-items: center; padding: 56px 80px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .passo.rev { grid-template-columns: 340px 1fr; }
+    .passo.rev .phone-mock { order: -1; }
+    .passo-num { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #d11550; text-transform: uppercase; margin-bottom: 16px; }
+    .passo-title { font-family: 'Playfair Display', Georgia, serif; font-size: 42px; font-weight: 800; color: #fff; margin-bottom: 20px; line-height: 1.15; }
+    .passo-desc { font-size: 17px; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 480px; }
+
+    .tip { background: rgba(209,21,80,0.07); border: 1px solid rgba(209,21,80,0.2); border-radius: 10px; padding: 12px 14px; margin-top: 16px; }
+    .tip-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: #d11550; text-transform: uppercase; margin-bottom: 3px; }
+    .tip-text { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.6; }
+
+    .destaque { background: rgba(209,21,80,0.1); border: 1px solid rgba(209,21,80,0.3); border-radius: 12px; padding: 16px 20px; margin-top: 16px; display: flex; align-items: flex-start; gap: 12px; }
+    .destaque-icon { font-size: 20px; flex-shrink: 0; }
+    .destaque-text { font-size: 14px; color: #fff; line-height: 1.7; }
+    .destaque-text strong { color: #d11550; }
+
+    /* PHONE MOCK */
+    .phone-mock { width: 340px; min-height: 600px; border-radius: 40px; border: 1px solid rgba(209,21,80,0.45); background: rgba(209,21,80,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+    .phone-mock video, .phone-mock img { width: 100%; height: 100%; object-fit: cover; border-radius: 40px; }
+    .phone-placeholder { text-align: center; color: rgba(209,21,80,0.22); font-size: 13px; line-height: 2.4; }
+
+    /* FOOTER */
+    .footer-cta { padding: 64px 80px; }
+    .concluir { display: inline-flex; align-items: center; gap: 8px; padding: 15px 40px; background: #d11550; border-radius: 30px; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .concluir:hover { background: #e8185a; transform: translateY(-2px); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding: 40px 20px; }
+      .hero-img { display: none; }
+      .passo, .passo.rev { grid-template-columns: 1fr; padding: 40px 20px; }
+      .passo.rev .phone-mock { order: 0; }
+      .phone-mock { width: 100%; min-height: 320px; }
+      .parte-banner { padding: 28px 20px; }
+      .footer-cta { padding: 40px 20px; }
+      .topbar { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <a href="index.html" class="logo">LINK<span>SY</span></a>
+    <a href="dashboard.html" class="back">← Voltar às trilhas</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <span class="hero-modulo">Módulo 1 — Edição Básica</span>
+      <h1 class="hero-titulo">Autocorte<span>eliminando respiros</span></h1>
+      <p class="hero-desc">Aprenda a usar o autocorte do CapCut para eliminar respiros, pausas e gaguejos do vídeo de forma automática.</p>
+      <div class="hero-badge">&#9654; Ferramenta: CapCut</div>
+    </div>
+    <div class="hero-right">
+      <img class="hero-img" src="logo-capcut.webp" alt="CapCut">
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="parte-banner">
+      <div class="parte-tag">Passo a passo</div>
+      <div class="parte-titulo">Autocorte eliminando respiros e pausas</div>
+    </div>
+
+    <div class="passo">
+      <div>
+        <div class="passo-num">Passo 01</div>
+        <div class="passo-title">Sem selecionar o vídeo → Legendas</div>
+        <div class="passo-desc">Com o projeto aberto, <strong style="color:#fff">não selecione o vídeo</strong>. Direto no menu inferior, toque em <strong style="color:#fff">Legendas</strong>.</div>
+        <div class="tip">
+          <div class="tip-label">Atenção</div>
+          <div class="tip-text">Se você selecionar o vídeo primeiro, a opção de legendas automáticas não vai aparecer corretamente. Deixe sem seleção.</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo rev">
+      <div>
+        <div class="passo-num">Passo 02</div>
+        <div class="passo-title">Legendas automáticas</div>
+        <div class="passo-desc">Dentro de Legendas, toque em <strong style="color:#fff">Legendas automáticas</strong>. Vai abrir a aba de configuração.</div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div>
+        <div class="passo-num">Passo 03</div>
+        <div class="passo-title">Configure: Automático + Padrão</div>
+        <div class="passo-desc">Na aba de configuração, deixe assim:<br><br>
+          <strong style="color:#fff">Idioma de origem</strong> → Automático<br>
+          <strong style="color:#fff">Modelo</strong> → Padrão
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo rev">
+      <div>
+        <div class="passo-num">Passo 04</div>
+        <div class="passo-title">Opções avançadas → Identificar palavras extras</div>
+        <div class="passo-desc">Role para baixo e toque em <strong style="color:#fff">Opções avançadas</strong>. Aqui está o pulo do gato: ative a opção <strong style="color:#d11550">Identificar palavras extras</strong>.</div>
+        <div class="destaque">
+          <span class="destaque-icon">🔑</span>
+          <span class="destaque-text">Essa opção é o que permite o CapCut detectar os respiros, pausas e gaguejos automaticamente. <strong>Sem ela ativada, o autocorte não funciona.</strong></span>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div>
+        <div class="passo-num">Passo 05</div>
+        <div class="passo-title">Gerar → Aguardar</div>
+        <div class="passo-desc">Toque em <strong style="color:#fff">Gerar</strong> e aguarde o CapCut processar o vídeo. Ele vai gerar as legendas automáticas e identificar todas as pausas.</div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo rev">
+      <div>
+        <div class="passo-num">Passo 06</div>
+        <div class="passo-title">Remover palavras extras → Excluir cliques</div>
+        <div class="passo-desc">Após gerar, vai aparecer a opção <strong style="color:#fff">Remover palavras extras</strong>. Toque nela e depois em <strong style="color:#d11550">Excluir cliques</strong>.</div>
+        <div class="tip">
+          <div class="tip-label">O que são os cliques?</div>
+          <div class="tip-text">São os intervalos em que o cliente fica em silêncio — respiros, pausas e gaguejo. O CapCut vai cortar todos automaticamente.</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div>
+        <div class="passo-num">Passo 07</div>
+        <div class="passo-title">Editar legendas → Selecionar tudo → Apagar</div>
+        <div class="passo-desc">Vá em <strong style="color:#fff">Editar legendas</strong>, toque em <strong style="color:#fff">Selecionar</strong> → <strong style="color:#fff">Selecionar tudo</strong> e apague todas as legendas.</div>
+        <div class="tip">
+          <div class="tip-label">Por que apagar?</div>
+          <div class="tip-text">A legenda gerada aqui serve só para fazer os cortes. A legenda final do vídeo é feita no Captions — então pode apagar essa sem medo.</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+    <div class="passo rev">
+      <div>
+        <div class="passo-num">Passo 08</div>
+        <div class="passo-title">Revise cada ponto de corte</div>
+        <div class="passo-desc">Percorra cada ponto onde o CapCut fez um corte e dê play para ouvir. Verifique se a frase ficou completa — às vezes ele corta no meio de uma fala.</div>
+        <div class="destaque">
+          <span class="destaque-icon">⚠️</span>
+          <span class="destaque-text">Se encontrar um corte errado, <strong>desfaça manualmente</strong> aquele ponto antes de exportar o vídeo.</span>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-placeholder">📱<br>vídeo em<br>breve</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-cta">
+    <button class="concluir" id="btnConcluir">✓ Marcar aula como concluída</button>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://wvtfwlulcfklbojrdaep.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2dGZ3bHVsY2ZrbGJvanJkYWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyMTk0NzksImV4cCI6MjA2MTc5NTQ3OX0.n64kqHPdJj61Bi0_hMl3RAE4sGVqxJ5dmFlxFcJCi_c';
+
+    document.getElementById('btnConcluir').addEventListener('click', async () => {
+      const userId = localStorage.getItem('linksy_user_id');
+      if (!userId) return;
+      await fetch(`${SUPABASE_URL}/rest/v1/progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({ user_id: userId, lesson_id: 'b7', completed: true })
+      });
+      window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>
