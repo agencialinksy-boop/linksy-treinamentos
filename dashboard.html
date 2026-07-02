@@ -688,7 +688,7 @@
         }
         lessonNum++;
         const done = completedLessons.has(l.id);
-        const lessonPages = { b1: 'aula-legendagem.html', b2: 'aula-audio.html', b4: 'aula-correcao-cor.html', b7: 'aula-autocorte.html', c1: 'aula-storymaker.html' };
+        const lessonPages = { b1: 'aula-legendagem.html', b2: 'aula-audio.html', b4: 'aula-correcao-cor.html', b5: 'aula-legendas-dinamicas.html', b7: 'aula-autocorte.html', c1: 'aula-storymaker.html' };
         const hasPage = lessonPages[l.id];
         html += `<div class="lesson ${done ? 'completed' : ''}" data-id="${l.id}" onclick="${hasPage ? `window.location.href='${lessonPages[l.id]}'` : `toggleLesson('${l.id}', '${track.id}')`}">
           <span class="lesson-num">${String(lessonNum).padStart(2, '0')}</span>
